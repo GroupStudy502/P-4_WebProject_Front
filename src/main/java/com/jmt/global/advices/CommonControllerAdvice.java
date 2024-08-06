@@ -53,6 +53,9 @@ public class CommonControllerAdvice {
             errorCode = "Fail.Login";
         } else if (e instanceof AuthorizationDeniedException) {
             errorCode = "UnAuthorized";
+            errorCode = "Fail.Login";
+        } else if (e instanceof AuthorizationDeniedException) {
+            errorCode = "Unauthorized";
         }
 
         if (StringUtils.hasText(errorCode)) {
