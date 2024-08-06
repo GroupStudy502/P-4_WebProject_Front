@@ -1,6 +1,6 @@
 package com.jmt.member;
 
-import com.jmt.member.etities.Member;
+import com.jmt.member.entities.Member;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
