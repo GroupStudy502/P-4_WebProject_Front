@@ -54,12 +54,12 @@ MemberControllerTest {
     @DisplayName("회원 가입 테스트")
     void joinTest() throws Exception {
         RequestJoin form = new RequestJoin();
-        //form.setEmail("user01@test.org");
-        //form.setPassword("_aA123456");
-        //form.setConfirmPassword(form.getPassword());
-        //form.setUserName("사용자01");
-        //form.setMobile("010-1000-1000");
-        //form.setAgree(true);
+        form.setEmail("user01@test.org");
+        form.setPassword("_aA123456");
+        form.setConfirmPassword(form.getPassword());
+        form.setUserName("사용자01");
+        form.setMobile("010-1000-1000");
+        form.setAgree(true);
 
         String params = om.writeValueAsString(form);
 
@@ -90,7 +90,7 @@ MemberControllerTest {
         JSONData data = om.readValue(body, JSONData.class);
         String token = (String)data.getData();
 
-        mockMvc.perform(get("/account/test1")
+        mockMvc.perform(get("/account/test2")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print());
 
