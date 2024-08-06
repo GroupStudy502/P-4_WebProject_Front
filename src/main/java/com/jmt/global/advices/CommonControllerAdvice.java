@@ -52,21 +52,21 @@ public class CommonControllerAdvice {
         } else if (e instanceof AuthenticationException) {
             errorCode = "Fail.Login";
         } else if (e instanceof AuthorizationDeniedException) {
-            errorCode = "UnAuthorized";
+            errorCode = "Unauthorized";
         }
 
-            if (StringUtils.hasText(errorCode)) {
-                message = utils.getMessage(errorCode);
-                status = HttpStatus.UNAUTHORIZED;
-            }
-
-            JSONData data = new JSONData();
-            data.setSuccess(false);
-            data.setMessage(message);
-            data.setStatus(status);
-
-            e.printStackTrace();
-
-            return ResponseEntity.status(status).body(data);
+        if (StringUtils.hasText(errorCode)) {
+            message = utils.getMessage(errorCode);
+            status = HttpStatus.UNAUTHORIZED;
         }
+
+        JSONData data = new JSONData();
+        data.setSuccess(false);
+        data.setMessage(message);
+        data.setStatus(status);
+
+        e.printStackTrace();
+
+        return ResponseEntity.status(status).body(data);
     }
+}
