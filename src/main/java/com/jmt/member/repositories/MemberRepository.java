@@ -1,7 +1,7 @@
 package com.jmt.member.repositories;
 
-import com.jmt.member.etities.Member;
-import com.jmt.member.etities.QMember;
+import com.jmt.member.entities.Member;
+import com.jmt.member.entities.QMember;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
