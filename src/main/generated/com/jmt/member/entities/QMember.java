@@ -1,4 +1,4 @@
-package com.jmt.member.etities;
+package com.jmt.member.entities;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QMember extends EntityPathBase<Member> {
 
-    private static final long serialVersionUID = 640802901L;
+    private static final long serialVersionUID = -914239043L;
 
     public static final QMember member = new QMember("member1");
 

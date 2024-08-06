@@ -1,4 +1,4 @@
-package com.jmt.member.etities;
+package com.jmt.member.entities;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QAuthorities extends EntityPathBase<Authorities> {
 
-    private static final long serialVersionUID = -1123607994L;
+    private static final long serialVersionUID = -998389282L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
