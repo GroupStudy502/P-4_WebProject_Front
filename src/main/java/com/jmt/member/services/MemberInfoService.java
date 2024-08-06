@@ -2,8 +2,8 @@ package com.jmt.member.services;
 
 import com.jmt.member.MemberInfo;
 import com.jmt.member.constants.Authority;
-import com.jmt.member.etities.Authorities;
-import com.jmt.member.etities.Member;
+import com.jmt.member.entities.Authorities;
+import com.jmt.member.entities.Member;
 import com.jmt.member.repositories.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

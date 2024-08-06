@@ -1,4 +1,4 @@
-package com.jmt.member.etities;
+package com.jmt.member.entities;
 
 import com.jmt.member.constants.Authority;
 import jakarta.persistence.*;
