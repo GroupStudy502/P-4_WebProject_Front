@@ -23,8 +23,8 @@ public class MemberController {
 
     private final JoinValidator joinValidator;
     private final TokenProvider tokenProvider;
-    private final MemberSaveService saveService;
     private final Utils utils;
+    private final MemberSaveService saveService;
 
     @PostMapping
     public ResponseEntity join(@RequestBody @Valid RequestJoin form, Errors errors) {
@@ -36,6 +36,7 @@ public class MemberController {
         }
 
         saveService.save(form);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
