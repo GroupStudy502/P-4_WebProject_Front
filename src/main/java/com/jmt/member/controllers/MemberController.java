@@ -25,6 +25,7 @@ public class MemberController {
     private final MemberSaveService saveService;
     private final TokenProvider tokenProvider;
     private final Utils utils;
+    private final MemberSaveService saveService;
 
     @PostMapping
     public ResponseEntity join(@RequestBody @Valid RequestJoin form, Errors errors) {
