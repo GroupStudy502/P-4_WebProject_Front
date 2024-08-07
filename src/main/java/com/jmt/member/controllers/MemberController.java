@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final JoinValidator joinValidator;
-    private final MemberSaveService saveService;
     private final TokenProvider tokenProvider;
     private final Utils utils;
     private final MemberSaveService saveService;
