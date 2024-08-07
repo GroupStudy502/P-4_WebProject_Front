@@ -4,6 +4,7 @@ import com.jmt.global.Utils;
 import com.jmt.global.exceptions.BadRequestException;
 import com.jmt.global.rests.JSONData;
 import com.jmt.member.jwt.TokenProvider;
+import com.jmt.member.services.MemberSaveService;
 import com.jmt.member.validators.JoinValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class MemberController {
 
     private final JoinValidator joinValidator;
     private final TokenProvider tokenProvider;
+    private final MemberSaveService saveService;
     private final Utils utils;
 
     @PostMapping
@@ -33,6 +35,7 @@ public class MemberController {
             throw new BadRequestException(utils.getErrorMessages(errors));
         }
 
+        saveService.save(form);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
