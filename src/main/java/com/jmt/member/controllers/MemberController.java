@@ -62,5 +62,14 @@ public class MemberController {
         return new JSONData(token);
     }
 
+    @GetMapping("/test1")
+    public void memberOnly() {
+        log.info("회원전용!");
+    }
 
+    @GetMapping("/test2")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public void adminOnly() {
+        log.info("관리자 전용!");
+    }
 }

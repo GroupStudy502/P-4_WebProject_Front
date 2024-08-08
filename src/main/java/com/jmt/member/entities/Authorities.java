@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Authorities {
     @Id
-    @JsonIgnore
+    @JsonIgnore // json 변환시에 문제 발생 처리
     @ManyToOne(fetch= FetchType.LAZY)
     private Member member;
 
