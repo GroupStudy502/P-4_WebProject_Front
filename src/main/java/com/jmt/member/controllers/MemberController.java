@@ -25,16 +25,17 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final JoinValidator joinValidator;
-    private final MemberSaveService saveService;
     private final TokenProvider tokenProvider;
     private final Utils utils;
+    private final MemberSaveService saveService;
 
     // 로그인한 회원 정보 조회
     @GetMapping
     public JSONData info(@AuthenticationPrincipal MemberInfo memberInfo) {
-        Member member = memberInfo.getMember();
 
+        Member member = memberInfo.getMember();
         return new JSONData(member);
+
     }
 
     @PostMapping
@@ -64,4 +65,5 @@ public class MemberController {
         return new JSONData(token);
     }
 
+    // 회원정보 조회
 }
