@@ -31,8 +31,10 @@ public class MemberController {
     // 로그인한 회원 정보 조회
     @GetMapping
     public JSONData info(@AuthenticationPrincipal MemberInfo memberInfo) {
+
         Member member = memberInfo.getMember();
         return new JSONData(member);
+
     }
 
     @PostMapping
@@ -62,14 +64,5 @@ public class MemberController {
         return new JSONData(token);
     }
 
-    @GetMapping("/test1")
-    public void memberOnly() {
-        log.info("회원전용!");
-    }
-
-    @GetMapping("/test2")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public void adminOnly() {
-        log.info("관리자 전용!");
-    }
+    // 회원정보 조회
 }
