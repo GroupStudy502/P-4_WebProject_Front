@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Authorities {
     @Id
-    @JsonIgnore
-@ManyToOne(fetch= FetchType.LAZY)
-private Member member;
+    @JsonIgnore // json 변환시에 문제 발생 처리
+    @ManyToOne(fetch= FetchType.LAZY)
+    private Member member;
 
-@Id
-@Column(length=20)
-@Enumerated(EnumType.STRING)
-private Authority authority;
+    @Id
+    @Column(length=20)
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 }
