@@ -2,6 +2,7 @@ package com.jmt.restaurant.services;
 
 import com.jmt.global.rests.gov.api.ApiResult;
 import com.jmt.restaurant.entities.Restaurant;
+import com.jmt.restaurant.entities.RestaurantImage;
 import com.jmt.restaurant.repositories.FoodMenuImageRepository;
 import com.jmt.restaurant.repositories.FoodMenuRepository;
 import com.jmt.restaurant.repositories.RestaurantImageRepository;
@@ -112,5 +113,60 @@ public class DataTransferService {
                 .filter(d-> d.get("RSTR_ID").equals(rstrId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    /**
+     * 식당 이미지 업데이트
+     */
+    public void update2(int pageNo) {
+        pageNo = Math.max(pageNo, 1);
+
+        String url = String.format("https://seoul.openapi.redtable.global/api/rstr/img?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+
+        ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            return;
+        }
+
+        ApiResult result = response.getBody();
+        if (!result.getHeader().get("resultCode").equals("00")) {
+            return;
+        }
+        List<Map<String, String>> tmp = result.getBody();
+        if (tmp == null || tmp.isEmpty()) return;
+
+        List<RestaurantImage> items = tmp.stream()
+                .map(d -> {
+                    Restaurant restaurant = restaurantRepository.findById(Long.valueOf(d.get("RSTR_ID"))).orElse(null);
+
+                    return RestaurantImage.builder()
+                            .restaurant(restaurant)
+                            .rstrImgUrl(d.get("RSTR_IMG_URL"))
+                            .build();
+                }).toList();
+        restaurantImageRepository.saveAllAndFlush(items);
+    }
+
+    /**
+     * 식당 메뉴 정보
+     */
+    public void update3(int pageNo) {
+        pageNo = Math.max(pageNo, 1);
+
+        String url = String.format("https://seoul.openapi.redtable.global/api/menu/korean?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+
+        ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            return;
+        }
+
+        ApiResult result = response.getBody();
+        if (!result.getHeader().get("resultCode").equals("00")) {
+            return;
+        }
+
+        List<Map<String, String>> tmp = result.getBody();
+        if (tmp == null || tmp.isEmpty()) return;
+        tmp.forEach(System.out::println);
     }
 }
