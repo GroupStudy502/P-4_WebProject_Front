@@ -51,9 +51,9 @@ public class QFoodMenu extends EntityPathBase<FoodMenu> {
 
     public final StringPath spcltMenuNm = createString("spcltMenuNm");
 
-    public final BooleanPath spcltMenuYn = createBoolean("spcltMenuYn");
+    public final StringPath spcltMenuOgnUrl = createString("spcltMenuOgnUrl");
 
-    public final StringPath specltMenuOgnUrl = createString("specltMenuOgnUrl");
+    public final BooleanPath spcltMenuYn = createBoolean("spcltMenuYn");
 
     public QFoodMenu(String variable) {
         this(FoodMenu.class, forVariable(variable), INITS);

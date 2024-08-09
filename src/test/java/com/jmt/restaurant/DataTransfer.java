@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 public class DataTransfer {
 
     @Autowired
@@ -35,6 +35,15 @@ public class DataTransfer {
     @Test
     @DisplayName("메뉴 기본 정보")
     void update3() {
-            service.update3(1);
+        for (int i = 1; i<= 100; i++) {
+            service.update3(i);
+        }
+    }
+
+    @Test
+    @DisplayName("메뉴 이미지 정보")
+    void update4() {
+        service.update4(1);
+        service.update4(2);
     }
 }

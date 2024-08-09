@@ -28,7 +28,7 @@ public class FoodMenu extends BaseEntity {
     private String spcltMenuNm; // 지역 특산메뉴명
 
     @Column(length = 500)
-    private String specltMenuOgnUrl; // 지역 특산메뉴 URL
+    private String spcltMenuOgnUrl; // 지역 특산메뉴 URL
 
     @Column(length = 1000)
     private String menuDscrn; // 메뉴설명(주재료, 조리법 ,소스, 옵션)
