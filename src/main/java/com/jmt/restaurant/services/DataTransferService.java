@@ -32,8 +32,9 @@ public class DataTransferService {
     /**
      * 식당 기본 정보
      */
-    public void update1() {
-        String url = String.format("https://seoul.openapi.redtable.global/api/rstr?serviceKey=%s", serviceKey);
+    public void update1(int pageNo) {
+        pageNo = Math.max(pageNo, 1);
+        String url = String.format("https://seoul.openapi.redtable.global/api/rstr?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
 
         ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
@@ -46,7 +47,7 @@ public class DataTransferService {
         }
         List<Map<String, String>> tmp = result.getBody();
 
-        String url2 = String.format("https://seoul.openapi.redtable.global/api/rstr/oprt?serviceKey=%s", serviceKey);
+        String url2 = String.format("https://seoul.openapi.redtable.global/api/rstr/oprt?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
         ResponseEntity<ApiResult> result2 = restTemplate.getForEntity(URI.create(url2), ApiResult.class);
 
         List<Map<String, String>> tmp2 = result2.getBody().getBody();
@@ -95,6 +96,12 @@ public class DataTransferService {
 
                     return rest;
                 }).toList();
+
+        if (items == null || items.isEmpty()) {
+            return;
+        }
+
+        restaurantRepository.saveAllAndFlush(items);
 
     }
 

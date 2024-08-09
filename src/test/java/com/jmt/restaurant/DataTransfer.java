@@ -18,7 +18,10 @@ public class DataTransfer {
     @Test
     @DisplayName("식당 기본 정보")
     void update1() {
-        service.update1();
+        for (int i = 1; i <= 10; i++) {
+            service.update1(i);
+        }
+
     }
 
 }
