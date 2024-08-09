@@ -30,6 +30,7 @@ public class MemberController {
     private final MemberSaveService saveService;
 
     // 로그인한 회원 정보 조회
+    @PreAuthorize("isAuthorized")
     @GetMapping
     public JSONData info(@AuthenticationPrincipal MemberInfo memberInfo) {
 
@@ -63,7 +64,5 @@ public class MemberController {
         String token = tokenProvider.createToken(form.getEmail(), form.getPassword());
 
         return new JSONData(token);
+        }
     }
-
-    // 회원정보 조회
-}
