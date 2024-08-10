@@ -60,7 +60,7 @@ public class DataTransferService {
 
         List<Restaurant> items = tmp.stream()
                 .map(d -> {
-                    Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"));
+                    Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"), "RSTR");
 
                     Restaurant rest =  Restaurant.builder()
                             .rstrId(Long.valueOf(d.get("RSTR_ID")))
@@ -190,7 +190,7 @@ public class DataTransferService {
                             .spcltMenuOgnUrl(d.get("SPCLT_MENU_OGN_URL"))
                             .build();
 
-                    Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"));
+                    Map<String, String> extra = getExtra(tmp2, d.get("MENU_ID"), "MENU" );
                     if (extra != null) {
                         food.setMenuDscrn(extra.get("MENU_DSCRN"));
                         food.setMenuCtgryLclasNm(extra.get("MENU_CTGRY_LCLAS_NM"));
@@ -242,11 +242,11 @@ public class DataTransferService {
     }
 
 
-    private Map<String, String> getExtra(List<Map<String, String>> items, String rstrId) {
+    private Map<String, String> getExtra(List<Map<String, String>> items, String id, String mode) {
         if (items == null || items.isEmpty()) return null;
 
         return items.stream()
-                .filter(d -> d.get("RSTR_ID").equals(rstrId))
+                .filter(d -> d.get(mode + "_ID").equals(id))
                 .findFirst().orElse(null);
     }
 }
