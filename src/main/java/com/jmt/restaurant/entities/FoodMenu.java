@@ -15,18 +15,25 @@ public class FoodMenu extends BaseEntity {
     @Id
     private Long menuId; //메뉴 ID
 
+    @Column(nullable = false)
     private String menuNm; // 메뉴명
+
 
     private Integer menuPrice; // 메뉴 가격
 
+
     private Boolean spcltMenuYn; // 지역 특산메뉴여부
+
 
     private String spcltMenuNm; // 지역 특산메뉴명
 
-    private String specltMenuOgnUrl; // 지역 특산메뉴 URL
+    @Column(length = 500)
+    private String spcltMenuOgnUrl; // 지역 특산메뉴 URL
 
-    private String menuDscrn; // 메뉴설명(주재료
+    @Column(length = 1000)
+    private String menuDscrn; // 메뉴설명(주재료, 조리법 ,소스, 옵션)
 
+    @Column(length = 50)
     private String menuCtgryLclasNm; // 메뉴 카테고리 대분류명
 
     private String menuCtgrySclasNm; // 메뉴 카테고리 소분류

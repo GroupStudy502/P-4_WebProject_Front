@@ -23,6 +23,7 @@ public class FoodMenuImage {
     @JoinColumn(name = "menuId")
     private FoodMenu foodMenu;
 
+    @Column(nullable = false)
     private String foodImgUrl;
 
 
