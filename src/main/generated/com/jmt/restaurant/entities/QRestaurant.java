@@ -24,21 +24,21 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final StringPath areaNm = createString("areaNm");
 
-    public final NumberPath<Double> bsnsLcncNm = createNumber("bsnsLcncNm", Double.class);
+    public final StringPath bsnsLcncNm = createString("bsnsLcncNm");
 
     public final StringPath bsnsTmCn = createString("bsnsTmCn");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final NumberPath<Double> dbsnsStatmBzcndNm = createNumber("dbsnsStatmBzcndNm", Double.class);
+    public final StringPath dbsnsStatmBzcndNm = createString("dbsnsStatmBzcndNm");
 
     public final BooleanPath dcrnYn = createBoolean("dcrnYn");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
-    public final BooleanPath delvSrivicYn = createBoolean("delvSrivicYn");
+    public final BooleanPath delvSrvicYn = createBoolean("delvSrvicYn");
 
     public final BooleanPath dsbrCvntlYn = createBoolean("dsbrCvntlYn");
 
@@ -59,7 +59,7 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final StringPath onlineRsrvInfoCn = createString("onlineRsrvInfoCn");
 
-    public final BooleanPath petEnternPosblYn = createBoolean("petEnternPosblYn");
+    public final BooleanPath petEntrnPosblYn = createBoolean("petEntrnPosblYn");
 
     public final NumberPath<Integer> prdlSeatCnt = createNumber("prdlSeatCnt", Integer.class);
 
@@ -69,9 +69,9 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final StringPath restdyInfoCn = createString("restdyInfoCn");
 
-    public final NumberPath<Long> restrId = createNumber("restrId", Long.class);
-
     public final StringPath rsrvMthdNm = createString("rsrvMthdNm");
+
+    public final NumberPath<Long> rstrId = createNumber("rstrId", Long.class);
 
     public final StringPath rstrIntrcnCont = createString("rstrIntrcnCont");
 
@@ -85,7 +85,7 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final StringPath rstrRdnmAdr = createString("rstrRdnmAdr");
 
-    public final NumberPath<Double> rstrTelNo = createNumber("rstrTelNo", Double.class);
+    public final StringPath rstrTelNo = createString("rstrTelNo");
 
     public final NumberPath<Integer> seatCnt = createNumber("seatCnt", Integer.class);
 

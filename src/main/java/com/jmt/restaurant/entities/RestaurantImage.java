@@ -12,13 +12,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class RestaurantImage {
-
     @Id @GeneratedValue
     private Long seq;
+
+    @Column(nullable = false)
     private String rstrImgUrl;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restrId")
+    @JoinColumn(name="rstrId")
     private Restaurant restaurant;
 }
