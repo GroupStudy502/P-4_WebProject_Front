@@ -32,7 +32,7 @@ public class FoodMenu extends BaseEntity {
     @Column(length=50)
     private String menuCtgryLclasNm; // 메뉴카테고리대분류명
 
-    private String menuCtgrySclasNm; // 메뉴카테고리소분류명
+    private String menuCtgrySclasNm; // 메뉴 카테고리 소분류
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rstrId")
@@ -41,4 +41,5 @@ public class FoodMenu extends BaseEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "foodMenu", fetch = FetchType.LAZY)
     private List<FoodMenuImage> images;
+
 }
