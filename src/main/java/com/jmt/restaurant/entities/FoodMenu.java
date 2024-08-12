@@ -1,24 +1,35 @@
 package com.jmt.restaurant.entities;
 
+import com.jmt.global.entities.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Data
 @Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class FoodMenu{
+@NoArgsConstructor @AllArgsConstructor
+public class FoodMenu extends BaseEntity {
     @Id
     private Long menuId; // 메뉴 ID
 
+    @Column(nullable = false)
     private String menuNm; // 메뉴명
 
-    private String menuDscrn; // 메뉴설명(주재료, 조리법, 소스, 옵션)
+    private Integer menuPrice; // 메뉴가격
 
+    private Boolean spcltMenuYn; // 지역특산메뉴여부
+
+    private String spcltMenuNm; // 지역특산메뉴명
+
+    @Column(length=500)
+    private String spcltMenuOgnUrl; // 지역특산메뉴출처 URL
+
+    @Column(length=1000)
+    private String menuDscrn; // 메뉴설명(주재료,조리법,소스,옵션)
+
+    @Column(length=50)
     private String menuCtgryLclasNm; // 메뉴카테고리대분류명
 
     private String menuCtgrySclasNm; // 메뉴카테고리소분류명
@@ -26,4 +37,8 @@ public class FoodMenu{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rstrId")
     private Restaurant restaurant;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "foodMenu", fetch = FetchType.LAZY)
+    private List<FoodMenuImage> images;
 }

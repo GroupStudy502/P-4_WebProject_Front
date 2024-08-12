@@ -22,6 +22,16 @@ public class QFoodMenu extends EntityPathBase<FoodMenu> {
 
     public static final QFoodMenu foodMenu = new QFoodMenu("foodMenu");
 
+    public final com.jmt.global.entities.QBaseEntity _super = new com.jmt.global.entities.QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+
+    public final ListPath<FoodMenuImage, QFoodMenuImage> images = this.<FoodMenuImage, QFoodMenuImage>createList("images", FoodMenuImage.class, QFoodMenuImage.class, PathInits.DIRECT2);
+
     public final StringPath menuCtgryLclasNm = createString("menuCtgryLclasNm");
 
     public final StringPath menuCtgrySclasNm = createString("menuCtgrySclasNm");
@@ -32,7 +42,18 @@ public class QFoodMenu extends EntityPathBase<FoodMenu> {
 
     public final StringPath menuNm = createString("menuNm");
 
+    public final NumberPath<Integer> menuPrice = createNumber("menuPrice", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
     public final QRestaurant restaurant;
+
+    public final StringPath spcltMenuNm = createString("spcltMenuNm");
+
+    public final StringPath spcltMenuOgnUrl = createString("spcltMenuOgnUrl");
+
+    public final BooleanPath spcltMenuYn = createBoolean("spcltMenuYn");
 
     public QFoodMenu(String variable) {
         this(FoodMenu.class, forVariable(variable), INITS);
