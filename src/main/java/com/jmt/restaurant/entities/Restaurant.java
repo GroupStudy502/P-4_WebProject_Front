@@ -1,5 +1,6 @@
 package com.jmt.restaurant.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jmt.global.entities.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
