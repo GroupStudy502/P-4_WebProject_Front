@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class RestaurantImage {
+
     @Id @GeneratedValue
     private Long seq;
 
@@ -20,6 +21,6 @@ public class RestaurantImage {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="rstrId")
+    @JoinColumn(name = "rstrId")
     private Restaurant restaurant;
 }
