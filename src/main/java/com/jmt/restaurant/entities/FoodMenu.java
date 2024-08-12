@@ -11,8 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class FoodMenu extends BaseEntity {
+
     @Id
-    private Long menuId; // 메뉴 ID
+    private Long menuId; //메뉴 ID
 
     @Column(nullable = false)
     private String menuNm; // 메뉴명
@@ -41,4 +42,5 @@ public class FoodMenu extends BaseEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "foodMenu", fetch = FetchType.LAZY)
     private List<FoodMenuImage> images;
+
 }
