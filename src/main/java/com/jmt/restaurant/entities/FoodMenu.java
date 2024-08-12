@@ -39,7 +39,7 @@ public class FoodMenu extends BaseEntity {
     private String menuCtgrySclasNm; // 메뉴 카테고리 소분류
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restrId")
+    @JoinColumn(name = "rstrId")
     private Restaurant restaurant;
 
     @ToString.Exclude
