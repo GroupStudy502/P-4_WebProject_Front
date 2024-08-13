@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class MemberController {
     private final MemberInfoService memberInfoService;
 
     // 로그인한 회원 정보 조회
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public JSONData info(@AuthenticationPrincipal MemberInfo memberInfo) {
 
@@ -67,11 +69,10 @@ public class MemberController {
 
         return new JSONData(token);
     }
-
-    // 회원정보 조회
-    @GetMapping("/list")
-    public JSONData list() {
-        List<Member> members = memberInfoService.getMembers();
-        return new JSONData(members);
+        // 회원정보 조회
+        @GetMapping("/list")
+        public JSONData list() {
+            List<Member> members = memberInfoService.getMembers();
+            return new JSONData(members);
+        }
     }
-}
