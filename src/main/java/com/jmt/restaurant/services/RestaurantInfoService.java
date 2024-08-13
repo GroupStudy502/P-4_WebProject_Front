@@ -5,6 +5,7 @@ import com.jmt.global.Pagination;
 import com.jmt.restaurant.controllers.RestaurantSearch;
 import com.jmt.restaurant.entities.QRestaurant;
 import com.jmt.restaurant.entities.Restaurant;
+import com.jmt.restaurant.exceptions.RestaurantNotFoundException;
 import com.jmt.restaurant.repositories.RestaurantRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -54,6 +55,21 @@ public class RestaurantInfoService {
         return new ListData<>(items, pagination);
     }
 
+    /**
+     * 식당 개별 정보 조회
+     * @param rstrId
+     * @return
+     */
+    public Restaurant get(Long rstrId) {
+        // 2차 가공 필요
+        Restaurant item = repository.findById(rstrId).orElseThrow(RestaurantNotFoundException::new);
+
+        // 식당 이미지 바로 가져오기
+
+        // 추가 데이터 처리 -> 리뷰
+
+        return item;
+    }
 
 
 }
