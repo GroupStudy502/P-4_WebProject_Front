@@ -31,7 +31,7 @@ public class DataTransferService {
     private final FoodMenuImageRepository foodMenuImageRepository;
 
     private final RestTemplate restTemplate;
-    private String serviceKey = "8pAyRKOKAPjhVoCTIC20A8QCbtZmNoiDMNm2bV94YSJcNaEvpAuTWsMOUh6AcjXC";
+    private String serviceKey = "BOYbPA7XwfKbTICZBI6Myilx082zrTanL2VbWfQxwHMa8WA1YwyN2PkhdIeJZkmL";
 
     /**
      * 식당 기본 정보
