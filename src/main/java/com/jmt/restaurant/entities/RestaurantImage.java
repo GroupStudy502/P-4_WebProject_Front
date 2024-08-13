@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class RestaurantImage {
-
     @Id @GeneratedValue
     private Long seq;
 

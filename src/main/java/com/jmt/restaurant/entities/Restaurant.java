@@ -11,7 +11,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Restaurant extends BaseEntity {
-
     @Id
     private Long rstrId;
 

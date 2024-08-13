@@ -64,6 +64,4 @@ public class MemberController {
 
         return new JSONData(token);
     }
-
-    // 회원정보 조회
 }
