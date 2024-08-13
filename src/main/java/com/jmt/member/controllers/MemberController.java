@@ -30,7 +30,7 @@ public class MemberController {
     private final MemberSaveService saveService;
 
     // 로그인한 회원 정보 조회
-    @PreAuthorize("isAuthorized")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public JSONData info(@AuthenticationPrincipal MemberInfo memberInfo) {
 
