@@ -9,6 +9,7 @@ import com.jmt.restaurant.exceptions.RestaurantNotFoundException;
 import com.jmt.restaurant.repositories.RestaurantRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class RestaurantInfoService {
+    private final HttpServletRequest request; // 검색어 반영된 쿼리스트링 값
     private final RestaurantRepository repository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
 
@@ -50,7 +52,7 @@ public class RestaurantInfoService {
         // 페이징 데이터
         long total = repository.count(andBuilder); // 조회된 전체 갯수
 
-        Pagination pagination = new Pagination(page, (int)total, 10, limit);
+        Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
 
         return new ListData<>(items, pagination);
     }

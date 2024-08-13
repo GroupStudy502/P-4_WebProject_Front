@@ -21,7 +21,7 @@ public class RestaurantController {
      * @param search
       */
     @GetMapping("/list")
-    public JSONData list(@RequestBody RestaurantSearch search) {
+    public JSONData list(@ModelAttribute RestaurantSearch search) { // url로 데이터 요청이라 모델어튜리뷰트로 셋업
 
         ListData<Restaurant> data = infoService.getList(search);
 
