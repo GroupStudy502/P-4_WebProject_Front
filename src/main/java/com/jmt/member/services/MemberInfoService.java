@@ -43,4 +43,8 @@ public class MemberInfoService implements UserDetailsService {
                 .authorities(authorities)
                 .build();
     }
+
+    public List<Member> getMembers() {
+        return memberRepository.findAll();
+    }
 }

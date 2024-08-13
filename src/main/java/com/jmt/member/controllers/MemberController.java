@@ -6,6 +6,7 @@ import com.jmt.global.rests.JSONData;
 import com.jmt.member.MemberInfo;
 import com.jmt.member.entities.Member;
 import com.jmt.member.jwt.TokenProvider;
+import com.jmt.member.services.MemberInfoService;
 import com.jmt.member.services.MemberSaveService;
 import com.jmt.member.validators.JoinValidator;
 import jakarta.validation.Valid;
@@ -13,10 +14,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,6 +30,7 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final Utils utils;
     private final MemberSaveService saveService;
+    private final MemberInfoService memberInfoService;
 
     // 로그인한 회원 정보 조회
     @GetMapping
@@ -66,4 +69,9 @@ public class MemberController {
     }
 
     // 회원정보 조회
+    @GetMapping("/list")
+    public JSONData list() {
+        List<Member> members = memberInfoService.getMembers();
+        return new JSONData(members);
+    }
 }
