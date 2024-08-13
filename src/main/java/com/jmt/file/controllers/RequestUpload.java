@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class RequestUpload {
     @NotBlank
-    private String gid;
+    private String gid; //파일 아이디
     private String location;
     private boolean imageOnly; // 이미지만 업로드
     private boolean single; // 단일 파일 업로드
