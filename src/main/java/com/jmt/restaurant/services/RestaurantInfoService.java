@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RestaurantInfoService {
-    private final RestaurantRepository restaurantRepository; // 카운트 할 때 필요
+    private final RestaurantRepository repository; // 카운트 할 때 필요
+    private final RestaurantInfoService infoService;
 
 
 
