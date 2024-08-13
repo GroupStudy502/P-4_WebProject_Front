@@ -26,4 +26,7 @@ public class RequestJoin {
 
     @AssertTrue
     private boolean agree;
+
+
+
 }
