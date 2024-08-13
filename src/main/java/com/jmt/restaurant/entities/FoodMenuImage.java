@@ -10,21 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class FoodMenuImage {
-
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long seq;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menuId")
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="menuId")
     private FoodMenu foodMenu;
 
     @Column(nullable = false)
     private String foodImgUrl;
-
-
 }
