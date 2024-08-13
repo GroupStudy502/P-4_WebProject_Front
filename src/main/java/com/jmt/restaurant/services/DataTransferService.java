@@ -35,11 +35,9 @@ public class DataTransferService {
 
     /**
      * 식당 기본 정보
-     *
      */
     public void update1(int pageNo) {
         pageNo = Math.max(pageNo, 1);
-
         String url = String.format("https://seoul.openapi.redtable.global/api/rstr?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
 
         ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
@@ -61,7 +59,7 @@ public class DataTransferService {
 
         List<Restaurant> items = tmp.stream()
                 .map(d -> {
-                    Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"));
+                    Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"), "RSTR");
 
                     Restaurant rest =  Restaurant.builder()
                             .rstrId(Long.valueOf(d.get("RSTR_ID")))
@@ -189,11 +187,11 @@ public class DataTransferService {
                             .menuNm(d.get("MENU_NM"))
                             .menuPrice(Integer.valueOf(d.get("MENU_PRICE")))
                             .spcltMenuYn(d.get("SPCLT_MENU_YN").equals("Y"))
-                            .spcltMenuOgnUrl(d.get("SPCLT_MENU_OGN_URL"))
                             .spcltMenuNm(d.get("SPCLT_MENU_NM"))
+                            .spcltMenuOgnUrl(d.get("SPCLT_MENU_OGN_URL"))
                             .build();
 
-                    Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"));
+                    Map<String, String> extra = getExtra(tmp2, d.get("MENU_ID"), "MENU" );
                     if (extra != null) {
                         food.setMenuDscrn(extra.get("MENU_DSCRN"));
                         food.setMenuCtgryLclasNm(extra.get("MENU_CTGRY_LCLAS_NM"));
@@ -244,11 +242,12 @@ public class DataTransferService {
         foodMenuImageRepository.saveAllAndFlush(items);
     }
 
-    private Map<String, String> getExtra(List<Map<String, String>> items, String rstrId) {
+
+    private Map<String, String> getExtra(List<Map<String, String>> items, String id, String mode) {
         if (items == null || items.isEmpty()) return null;
 
         return items.stream()
-                .filter(d -> d.get("RSTR_ID").equals(rstrId))
+                .filter(d -> d.get(mode + "_ID").equals(id))
                 .findFirst().orElse(null);
     }
 }
