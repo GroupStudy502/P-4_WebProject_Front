@@ -145,8 +145,6 @@ public class DataTransferService {
                             .build();
                 }).toList();
 
-        if (items == null || items.isEmpty()) return;
-
         restaurantImageRepository.saveAllAndFlush(items);
     }
 
