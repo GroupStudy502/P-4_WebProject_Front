@@ -22,6 +22,7 @@ public class BoardDataController {
     @GetMapping("/list")
     public JSONData list() {
         List<BoardData> items = boardInfoService.getAllBoardData();
+        System.out.println(items);
         return new JSONData(items);
     }
 }
