@@ -18,7 +18,7 @@ public class DataTransfer {
     @Test
     @DisplayName("식당 기본 정보")
     void update1() {
-        for (int i = 101; i <= 170; i++) {
+        for (int i = 51; i <= 100; i++) {
             service.update1(i);
         }
 

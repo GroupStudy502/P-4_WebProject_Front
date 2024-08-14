@@ -63,18 +63,18 @@ public class RestaurantInfoService {
             if(sopt.equals("ALL")) {
                 // 통합 검색
                 condition = restaurant.rstrNm.concat(restaurant.rstrTelNo).concat(restaurant.areaNm).contains(skey);
-            } else if (sopt.equals("TITLE")) { // 레스토랑 명
+            } else if (sopt.equals("RSTR_NM")) { // 레스토랑 명
                 condition = restaurant.rstrNm.contains(skey);
 
-            } else if (sopt.equals("TEL")) { // 레스토랑 연락처
+            } else if (sopt.equals("RSTR_TEL")) { // 레스토랑 연락처
                 skey = skey.replaceAll("-", ""); // 숫자만 남긴다
                 condition = restaurant.rstrTelNo.contains(skey);
 
-            } else if (sopt.equals("ADDRESS")) { // 레스토랑 ADDRESS / areaNm
+            } else if (sopt.equals("AREA_NM")) { // 레스토랑 ADDRESS / areaNm
                 condition = restaurant.areaNm.contains(skey);
 
 
-            } else if (sopt.equals("CATEGORY")) { // 레스토랑 dbsnsStatmBzcndNm
+            } else if (sopt.equals("DBSNS_STATM_BZCND_NM")) { // 레스토랑 dbsnsStatmBzcndNm
 
             }
 
