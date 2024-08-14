@@ -32,7 +32,7 @@ public class DataTransferService {
 
     private final RestTemplate restTemplate;
 
-    private String serviceKey = "8Mu7gNxO98975QV25VMKBnsDC82WaomG1raYEiOXoi3kOTGsi89KCUJBxZI0HNz6";
+    private String serviceKey = "T2eCOptdknlAVKakKH6Y7DWFweda6uRh6jOSaUXsdU8WnvLoNfTFJSo0lVJk37g1";
 
     /**
      * 식당 기본 정보
