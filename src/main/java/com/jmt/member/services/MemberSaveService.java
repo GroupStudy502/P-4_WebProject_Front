@@ -47,9 +47,9 @@ public class MemberSaveService {
             member.setMobile(mobile);
         }
 
-        if (member.getGid() == null) {
-            member.setGid(UUID.randomUUID().toString());
-        }
+        String gid = member.getGid();
+        gid = StringUtils.hasText(gid) ? gid : UUID.randomUUID().toString();
+        member.setGid(gid);
 
         memberRepository.saveAndFlush(member);
 
