@@ -5,9 +5,9 @@ import com.jmt.file.entities.FileInfo;
 import com.jmt.file.entities.QFileInfo;
 import com.jmt.file.exceptions.FileNotFoundException;
 import com.jmt.file.repositories.FileInfoRepository;
+import com.jmt.global.Utils;
 import com.jmt.global.configs.FileProperties;
 import com.querydsl.core.BooleanBuilder;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.domain.Sort;
@@ -26,7 +26,7 @@ public class FileInfoService {
 
     private final FileInfoRepository infoRepository;
     private final FileProperties properties;
-    private final HttpServletRequest request;
+    private final Utils utils;
 
     /**
      * 파일 1개 조회
@@ -53,7 +53,7 @@ public class FileInfoService {
      *
      * @param gid
      * @param location
-     * @param status - ALL: 완료 + 미완료, DONE - 완료, UNDONE - 미완료
+     * @param status   - ALL: 완료 + 미완료, DONE - 완료, UNDONE - 미완료
      * @return
      */
     public List<FileInfo> getList(String gid, String location, FileStatus status) {
@@ -70,7 +70,7 @@ public class FileInfoService {
             andBuilder.and(fileInfo.done.eq(status == FileStatus.DONE));
         }
 
-        List<FileInfo> items = (List<FileInfo>)infoRepository.findAll(andBuilder, Sort.by(asc("createdAt")));
+        List<FileInfo> items = (List<FileInfo>) infoRepository.findAll(andBuilder, Sort.by(asc("createdAt")));
 
         // 2차 추가 데이터 처리
         items.forEach(this::addFileInfo);
@@ -102,8 +102,11 @@ public class FileInfoService {
 
     // 브라우저 접근 주소
     public String getFileUrl(FileInfo item) {
-        return request.getContextPath() + properties.getUrl() + getFolder(item.getSeq()) + "/" + getFileName(item);
+        String url = properties.getUrl() + getFolder(item.getSeq()) + "/" + getFileName(item);
+
+        return utils.url(url); //실제 경로를 주소가 나오게끔 수정
     }
+
 
     // 서버 업로드 경로
     public String getFilePath(FileInfo item) {
