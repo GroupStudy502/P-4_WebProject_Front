@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Configuration
+@RequiredArgsConstructor
 public class BeanConfig {
 
     private final EntityManager em;
@@ -32,4 +33,6 @@ public class BeanConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+
 }

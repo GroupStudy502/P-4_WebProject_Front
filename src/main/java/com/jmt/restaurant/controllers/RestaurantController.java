@@ -7,32 +7,36 @@ import com.jmt.restaurant.services.RestaurantInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
-@RequestMapping("/restaurant")
 @RestController
+@RequestMapping("/restaurant")
+@RequiredArgsConstructor
 public class RestaurantController {
 
     private final RestaurantInfoService infoService;
 
+
     /**
      * 목록 조회
      *
-     * @return
-     */
+     * @param search
+      */
     @GetMapping("/list")
-    public JSONData list(@RequestBody RestaurantSearch search) {
+    public JSONData list(@ModelAttribute RestaurantSearch search) { // url로 데이터 요청이라 모델어튜리뷰트로 셋업
+
         ListData<Restaurant> data = infoService.getList(search);
-        return null;
+
+        return new JSONData(data);
     }
 
     /**
-     * 상세 조회
-     *
-     */
+     *  식당 상세 조회
+      */
     @GetMapping("/info/{rstrId}")
     public JSONData info(@PathVariable("rstrId") Long rstrId) {
+
         Restaurant data = infoService.get(rstrId);
 
         return new JSONData(data);
     }
+
 }
