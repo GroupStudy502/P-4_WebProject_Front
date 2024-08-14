@@ -1,7 +1,5 @@
 package com.jmt.restaurant.services;
 
-package com.jmt.restaurant.services;
-
 import com.jmt.global.ListData;
 import com.jmt.global.Pagination;
 import com.jmt.restaurant.controllers.RestaurantSearch;
