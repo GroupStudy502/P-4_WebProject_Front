@@ -31,11 +31,11 @@ public class DataTransferService {
     private final FoodMenuImageRepository foodMenuImageRepository;
 
     private final RestTemplate restTemplate;
-    private String serviceKey = "BOYbPA7XwfKbTICZBI6Myilx082zrTanL2VbWfQxwHMa8WA1YwyN2PkhdIeJZkmL";
+
+    private String serviceKey = "8Mu7gNxO98975QV25VMKBnsDC82WaomG1raYEiOXoi3kOTGsi89KCUJBxZI0HNz6";
 
     /**
      * 식당 기본 정보
-     *
      */
     public void update1(int pageNo) {
         pageNo = Math.max(pageNo, 1);
