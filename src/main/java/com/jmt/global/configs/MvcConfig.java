@@ -7,6 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableJpaAuditing
-@EnableDiscoveryClient
+@EnableDiscoveryClient // 유레카에서 해당 인스턴스 주소 찾는 역할
 public class MvcConfig implements WebMvcConfigurer {
 }
