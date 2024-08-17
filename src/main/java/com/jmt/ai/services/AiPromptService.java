@@ -14,7 +14,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +43,8 @@ public class AiPromptService {
             String json = om.writeValueAsString(params);
 
             HttpHeaders headers = new HttpHeaders();
+
+            System.out.println("token:" + token);
             headers.setBearerAuth(token);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -56,6 +60,7 @@ public class AiPromptService {
                 Map<String, String> data4 = (Map<String, String>)data3.get(0).get("message");
 
                 String message2 = data4.get("content");
+                System.out.println(message2);
 
                 return message2;
             }

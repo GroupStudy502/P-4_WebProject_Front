@@ -1,5 +1,6 @@
 package com.jmt.global;
 
+import com.jmt.config.service.ConfigInfoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.ServiceInstance;
@@ -23,6 +24,7 @@ public class Utils { // 빈의 이름 - utils
     private final HttpServletRequest request;
     private final DiscoveryClient discoveryClient;
 
+    private final ConfigInfoService configInfoService;
 
     public Map<String, List<String>> getErrorMessages(Errors errors) {
         // FieldErrors
@@ -69,6 +71,13 @@ public class Utils { // 빈의 이름 - utils
         return messages.isEmpty() ? code : messages.get(0);
     }
 
+    public String adminUrl(String url) {
+        List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
+        return String.format("%s%s", instances.get(0).getUri().toString(), url);
+    }
+
+}
+
     public String url(String url) {
         List<ServiceInstance> instances = discoveryClient.getInstances("api-service");
 
@@ -78,5 +87,6 @@ public class Utils { // 빈의 이름 - utils
             return String.format("%s://%s:%d%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath(), url);
         }
     }
+
 
 }
