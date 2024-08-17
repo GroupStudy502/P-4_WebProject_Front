@@ -1,12 +1,10 @@
 package com.jmt.restaurant;
 
-import com.jmt.restaurant.repositories.RestaurantRepository;
 import com.jmt.restaurant.services.DataTransferService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 //@ActiveProfiles("test")
@@ -44,6 +42,6 @@ public class DataTransfer {
     @DisplayName("메뉴 이미지 정보")
     void update4() {
         service.update4(1);
-        service.update4(2);
+        //service.update4(2);
     }
 }
