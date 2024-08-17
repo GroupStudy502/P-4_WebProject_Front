@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
-@Service
+@Service("configInfoService2")
 @RequiredArgsConstructor
 public class ConfigInfoService {
     private final Utils utils;
@@ -39,7 +39,6 @@ public class ConfigInfoService {
         HttpEntity<Void> request = new HttpEntity<>(headers);
 
         ResponseEntity<JSONData> response = restTemplate.exchange(url, HttpMethod.GET, request, JSONData.class);
-
         if (response.getStatusCode().isSameCodeAs(HttpStatus.OK) && response.getBody().isSuccess()) {
             try {
                 JSONData data = response.getBody();
@@ -51,6 +50,7 @@ public class ConfigInfoService {
                 e.printStackTrace();
             }
         }
+
 
         return null;
     }

@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.pl.NIP;
 
 import java.util.List;
 import java.util.Map;
@@ -18,5 +17,4 @@ public class RequestMessage {
     private boolean stream;
     @NonNull
     private List<Map<String, String>> messages;
-
 }

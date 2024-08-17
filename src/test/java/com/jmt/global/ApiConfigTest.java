@@ -1,16 +1,18 @@
-package com.jmt.ai.services;
+package com.jmt.global;
 
+import com.jmt.global.services.ConfigInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class AiPromptServiceTest {
+public class ApiConfigTest {
     @Autowired
-    private AiPromptService service;
+    private ConfigInfoService infoService;
 
     @Test
     void test1() {
-        service.prompt("오늘 점심 메뉴 추천, 한국어로 답해줘");
+        infoService.getApiConfig();
+
     }
 }

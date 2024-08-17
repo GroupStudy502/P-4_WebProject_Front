@@ -1,6 +1,5 @@
 package com.jmt.ai.controllers;
 
-
 import com.jmt.ai.services.AiPromptService;
 import com.jmt.global.rests.JSONData;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +24,4 @@ public class AiController {
 
         return jsonData;
     }
-
 }
