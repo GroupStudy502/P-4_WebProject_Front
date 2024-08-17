@@ -23,12 +23,8 @@ public class Utils { // 빈의 이름 - utils
     private final MessageSource messageSource;
     private final HttpServletRequest request;
     private final DiscoveryClient discoveryClient;
+
     private final ConfigInfoService configInfoService;
-
-
-    public String toUpper(String str) {
-        return str.toUpperCase();
-    }
 
     public Map<String, List<String>> getErrorMessages(Errors errors) {
         // FieldErrors
@@ -79,5 +75,18 @@ public class Utils { // 빈의 이름 - utils
         List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
         return String.format("%s%s", instances.get(0).getUri().toString(), url);
     }
+
+}
+
+    public String url(String url) {
+        List<ServiceInstance> instances = discoveryClient.getInstances("api-service");
+
+        try {
+            return String.format("%s%s", instances.get(0).getUri().toString(), url);
+        } catch (Exception e) {
+            return String.format("%s://%s:%d%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath(), url);
+        }
+    }
+
 
 }

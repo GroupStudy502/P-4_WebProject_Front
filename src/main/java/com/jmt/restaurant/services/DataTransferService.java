@@ -40,8 +40,6 @@ public class DataTransferService {
         Map<String, String> config = infoService.getApiConfig();
         return config.get("publicOpenApiKey").trim();
     }
-    //
-
 
     /**
      * 식당 기본 정보
