@@ -1,6 +1,5 @@
 package com.jmt.global;
 
-import com.jmt.config.service.ConfigInfoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.ServiceInstance;
@@ -10,6 +9,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +23,10 @@ public class Utils { // 빈의 이름 - utils
     private final MessageSource messageSource;
     private final HttpServletRequest request;
     private final DiscoveryClient discoveryClient;
-
-    private final ConfigInfoService configInfoService;
+    private final RestTemplate restTemplate;
 
     public Map<String, List<String>> getErrorMessages(Errors errors) {
         // FieldErrors
-
 
         Map<String, List<String>> messages = errors.getFieldErrors()
                 .stream()
@@ -71,13 +69,6 @@ public class Utils { // 빈의 이름 - utils
         return messages.isEmpty() ? code : messages.get(0);
     }
 
-    public String adminUrl(String url) {
-        List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
-        return String.format("%s%s", instances.get(0).getUri().toString(), url);
-    }
-
-}
-
     public String url(String url) {
         List<ServiceInstance> instances = discoveryClient.getInstances("api-service");
 
@@ -88,5 +79,8 @@ public class Utils { // 빈의 이름 - utils
         }
     }
 
-
+    public String adminUrl(String url) {
+        List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
+        return String.format("%s%s", instances.get(0).getUri().toString(), url);
+    }
 }
