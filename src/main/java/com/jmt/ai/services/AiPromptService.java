@@ -41,6 +41,8 @@ public class AiPromptService {
             String json = om.writeValueAsString(params);
 
             HttpHeaders headers = new HttpHeaders();
+
+            System.out.println("token:" + token);
             headers.setBearerAuth(token);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -56,6 +58,7 @@ public class AiPromptService {
                 Map<String, String> data4 = (Map<String, String>)data3.get(0).get("message");
 
                 String message2 = data4.get("content");
+                System.out.println(message2);
 
                 return message2;
             }

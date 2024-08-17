@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@Transactional
+@Transactional  //EntityManager 쓰기위함
 @RequiredArgsConstructor
 public class BoardInfoService {
 

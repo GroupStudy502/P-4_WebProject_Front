@@ -25,6 +25,8 @@ public class Utils { // 빈의 이름 - utils
     private final DiscoveryClient discoveryClient;
     private final RestTemplate restTemplate;
 
+    private final ConfigInfoService configInfoService;
+
     public Map<String, List<String>> getErrorMessages(Errors errors) {
         // FieldErrors
 
@@ -69,6 +71,13 @@ public class Utils { // 빈의 이름 - utils
         return messages.isEmpty() ? code : messages.get(0);
     }
 
+    public String adminUrl(String url) {
+        List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
+        return String.format("%s%s", instances.get(0).getUri().toString(), url);
+    }
+
+}
+
     public String url(String url) {
         List<ServiceInstance> instances = discoveryClient.getInstances("api-service");
 
@@ -79,8 +88,4 @@ public class Utils { // 빈의 이름 - utils
         }
     }
 
-    public String adminUrl(String url) {
-        List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
-        return String.format("%s%s", instances.get(0).getUri().toString(), url);
-    }
 }
