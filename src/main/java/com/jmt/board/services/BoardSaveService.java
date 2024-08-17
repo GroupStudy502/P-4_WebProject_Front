@@ -19,7 +19,8 @@ import org.springframework.util.StringUtils;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class BoardSaveService { private final HttpServletRequest request;
+public class BoardSaveService {
+    private final HttpServletRequest request;
     private final PasswordEncoder encoder;
     private final BoardRepository boardRepository;
     private final BoardDataRepository boardDataRepository;
