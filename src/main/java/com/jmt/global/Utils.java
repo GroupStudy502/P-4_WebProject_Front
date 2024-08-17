@@ -1,14 +1,23 @@
 package com.jmt.global;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jmt.global.rests.JSONData;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +31,7 @@ public class Utils { // 빈의 이름 - utils
     private final MessageSource messageSource;
     private final HttpServletRequest request;
     private final DiscoveryClient discoveryClient;
+    private final RestTemplate restTemplate;
 
 
     public Map<String, List<String>> getErrorMessages(Errors errors) {
@@ -77,6 +87,11 @@ public class Utils { // 빈의 이름 - utils
         } catch (Exception e) {
             return String.format("%s://%s:%d%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath(), url);
         }
+    }
+
+    public String adminUrl(String url) {
+        List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
+        return String.format("%s%s", instances.get(0).getUri().toString(), url);
     }
 
 }

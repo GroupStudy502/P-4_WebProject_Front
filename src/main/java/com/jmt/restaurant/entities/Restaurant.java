@@ -82,4 +82,8 @@ public class Restaurant extends BaseEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<RestaurantImage> images;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private List<FoodMenu> foods;
 }

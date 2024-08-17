@@ -46,6 +46,8 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final BooleanPath fgggMenuOfrYn = createBoolean("fgggMenuOfrYn");
 
+    public final ListPath<FoodMenu, QFoodMenu> foods = this.<FoodMenu, QFoodMenu>createList("foods", FoodMenu.class, QFoodMenu.class, PathInits.DIRECT2);
+
     public final BooleanPath hmdlvSaleYn = createBoolean("hmdlvSaleYn");
 
     public final StringPath hmpgUrl = createString("hmpgUrl");
