@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,9 +18,13 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     private static final long serialVersionUID = -1179438818L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QOrderItem orderItem = new QOrderItem("orderItem");
 
     public final com.jmt.global.entities.QBaseEntity _super = new com.jmt.global.entities.QBaseEntity(this);
+
+    public final com.jmt.board.entities.QBoardData boardData;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
@@ -27,21 +32,39 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
 
+    public final StringPath itemName = createString("itemName");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
+    public final QOrderInfo orderInfo;
+
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
+
+    public final NumberPath<Integer> qty = createNumber("qty", Integer.class);
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
     public QOrderItem(String variable) {
-        super(OrderItem.class, forVariable(variable));
+        this(OrderItem.class, forVariable(variable), INITS);
     }
 
     public QOrderItem(Path<? extends OrderItem> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QOrderItem(PathMetadata metadata) {
-        super(OrderItem.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QOrderItem(PathMetadata metadata, PathInits inits) {
+        this(OrderItem.class, metadata, inits);
+    }
+
+    public QOrderItem(Class<? extends OrderItem> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.boardData = inits.isInitialized("boardData") ? new com.jmt.board.entities.QBoardData(forProperty("boardData"), inits.get("boardData")) : null;
+        this.orderInfo = inits.isInitialized("orderInfo") ? new QOrderInfo(forProperty("orderInfo"), inits.get("orderInfo")) : null;
     }
 
 }

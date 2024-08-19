@@ -5,7 +5,10 @@ import com.jmt.global.SHA256;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -14,8 +17,15 @@ public class PaymentConfigService {
 
     public PaymentConfig get(Long oid, Integer price) {
         try {
-            PaymentConfig config = infoService.get("payment", PaymentConfig.class)
-                    .orElseGet(PaymentConfig::new);
+            Map<String, String> _data = infoService.getConfing("payment");
+            PaymentConfig config = new PaymentConfig();
+            config.setSignKey(_data.get("signKey"));
+            config.setSignKey(_data.get("mid"));
+
+            List<String> payMethods = Arrays.stream(_data.getOrDefault("payMethodds", "")
+                    .split(",")).toList();
+
+            config.setPayMethods(payMethods);
 
             if (oid == null || price == null) {
                 return config;
@@ -42,6 +52,9 @@ public class PaymentConfigService {
             config.setMKey(mKey);
 
             config.setTimestamp(timestamp);
+            config.setOid(oid);
+            config.setPrice(price);
+
             return config;
 
         } catch (Exception e) {
