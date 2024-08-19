@@ -36,7 +36,7 @@ public class RestaurantInfoService {
     public ListData<Restaurant> getList(RestaurantSearch search) {
         int page = Math.max(search.getPage(), 1); // 페이지가 0이거나 음수이면 1이 나오도록 설정
         int limit = search.getLimit(); // 한페이지당 보여줄 레코드 개수
-        limit = limit < 1 ? 20 : limit;
+        limit = limit < 1 ? 10 : limit;
         int offset = (page -1) * limit; // 레코드 시작 위치 구하기
 
         // 검색 처리 B
@@ -70,12 +70,11 @@ public class RestaurantInfoService {
                 skey = skey.replaceAll("-", ""); // 숫자만 남긴다
                 condition = restaurant.rstrTelNo.contains(skey);
 
-            } else if (sopt.equals("ADDRESS")) { // 레스토랑 ADDRESS / areaNm
+            } else if (sopt.equals("ADDRESS")) { // 레스토랑 주소 / areaNm
                 condition = restaurant.areaNm.contains(skey);
 
-
             } else if (sopt.equals("CATEGORY")) { // 레스토랑 dbsnsStatmBzcndNm
-
+                condition = restaurant.dbsnsStatmBzcndNm.contains(skey);
             }
 
             if (condition != null) {
