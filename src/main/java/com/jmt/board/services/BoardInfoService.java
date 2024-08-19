@@ -34,7 +34,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class BoardInfoService {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory queryFactory;
     private final BoardDataRepository repository;
     private final BoardConfigInfoService configInfoService;
     private final HttpServletRequest request;
