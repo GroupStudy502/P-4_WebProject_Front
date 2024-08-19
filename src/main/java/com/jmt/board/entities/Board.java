@@ -1,7 +1,6 @@
 package com.jmt.board.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jmt.file.entities.FileInfo;
 import com.jmt.global.entities.BaseMemberEntity;
 import com.jmt.member.constants.Authority;
 import jakarta.persistence.*;
@@ -9,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.FileInfo;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -21,19 +21,20 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-@Table(indexes = @Index(name="idx_board_basic", columnList = "listOrder DESC, createdAt DESC"))
+@JsonIgnoreProperties(ignoreUnknown = true) // json 데이터가 잘못 넘어와도 오류가 안 나게끔 설정
+@Table(indexes = @Index(name = "idx_board_basic", columnList = "listOrder DESC, createdAt DESC"))
+
 public class Board extends BaseMemberEntity {
     @Id
-    @Column(length=30)
+    @Column(length = 30)
     private String bid; // 게시판 아이디
 
-    @Column(length=65, nullable = false)
+    @Column(length = 65, nullable = false)
     private String gid = UUID.randomUUID().toString();
 
     private int listOrder; // 진열 가중치
 
-    @Column(length=60, nullable = false)
+    @Column(length = 60, nullable = false)
     private String bName; // 게시판 이름
 
     private boolean active; // 사용 여부
@@ -54,35 +55,35 @@ public class Board extends BaseMemberEntity {
 
     private boolean useUploadFile; // 파일 첨부 사용 여부
 
-    @Column(length=10, nullable = false)
+    @Column(length = 10, nullable = false)
     private String locationAfterWriting = "list"; // 글 작성 후 이동 위치
 
     private boolean showListBelowView; // 글 보기 하단 게시글 목록 노출 여부
 
-    @Column(length=10, nullable = false)
+    @Column(length = 10, nullable = false)
     private String skin = "default"; // 스킨
 
     @Lob
     private String category; // 게시판 분류
 
     @Enumerated(EnumType.STRING)
-    @Column(length=20, nullable = false)
+    @Column(length = 20, nullable = false)
     private Authority listAccessType = Authority.ALL; // 권한 설정 - 글목록
 
     @Enumerated(EnumType.STRING)
-    @Column(length=20, nullable = false)
+    @Column(length = 20, nullable = false)
     private Authority viewAccessType = Authority.ALL; // 권한 설정 - 글보기
 
     @Enumerated(EnumType.STRING)
-    @Column(length=20, nullable = false)
+    @Column(length = 20, nullable = false)
     private Authority writeAccessType = Authority.ALL; // 권한 설정 - 글쓰기
 
     @Enumerated(EnumType.STRING)
-    @Column(length=20, nullable = false)
+    @Column(length = 20, nullable = false)
     private Authority replyAccessType = Authority.ALL; // 권한 설정 - 답글
 
     @Enumerated(EnumType.STRING)
-    @Column(length=20, nullable = false)
+    @Column(length = 20, nullable = false)
     private Authority commentAccessType = Authority.ALL; // 권한 설정 - 댓글
 
     @Lob
@@ -102,6 +103,8 @@ public class Board extends BaseMemberEntity {
      *
      * @return
      */
+
+
     public List<String> getCategories() {
         List<String> categories = new ArrayList<>();
 

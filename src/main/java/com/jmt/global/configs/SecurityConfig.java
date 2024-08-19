@@ -39,12 +39,9 @@ public class SecurityConfig {
                     c.requestMatchers(
                                     "/account",
                                     "/account/token",
-                                    "/file/**",
-                                    "/upload/**",
                                     "/restaurant/**",
-                                    "/tour/**",
                                     "/board/**",
-                                    "ai"
+                                     "/ai"
                             ).permitAll() // 회원가입, 로그인(토큰)은 모든 접근 가능
                             .anyRequest().authenticated(); // 그외에는 인증 필요
                 });

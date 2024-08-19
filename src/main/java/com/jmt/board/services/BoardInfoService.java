@@ -30,11 +30,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@Transactional  //EntityManager 쓰기위함
+@Transactional
 @RequiredArgsConstructor
 public class BoardInfoService {
 
-    private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
     private final BoardDataRepository repository;
     private final BoardConfigInfoService configInfoService;
     private final HttpServletRequest request;
@@ -282,4 +282,17 @@ public class BoardInfoService {
     public void addInfo(BoardData item) {
 
     }
+
+    public List<BoardData> getAllBoardData() {
+        QBoardData boardData = QBoardData.boardData;
+
+        List<BoardData> items = queryFactory.selectFrom(boardData)
+                .leftJoin(boardData.board)
+                .fetchJoin()
+                .leftJoin(boardData.member)
+                .fetchJoin()
+                .fetch();
+        return items;
+    }
+
 }

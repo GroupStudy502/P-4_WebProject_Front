@@ -15,17 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-@Service
 @Transactional
 @RequiredArgsConstructor
+@Service
 public class BoardSaveService {
-
     private final HttpServletRequest request;
     private final PasswordEncoder encoder;
-    private final BoardConfigInfoService configInfoService;
     private final BoardDataRepository boardDataRepository;
     private final MemberUtil memberUtil;
     private final FileUploadDoneService doneService;
+    private final BoardConfigInfoService configInfoService;
 
     public BoardData save(RequestBoard form) {
 

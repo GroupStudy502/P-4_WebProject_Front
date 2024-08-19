@@ -12,8 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class BoardConfigInfoService {
     private final RestTemplate restTemplate;
     private final ObjectMapper om;
@@ -21,30 +21,25 @@ public class BoardConfigInfoService {
 
     /**
      * 게시판 설정 조회
-     *
      * @param bid
      * @return
      */
     public Optional<Board> get(String bid) {
         try {
-            String url = utils.adminUrl("/api/board/config/" + bid);
+            String url = utils.adminUrl("/api/board/config" + bid);
             ResponseEntity<JSONData> response = restTemplate.getForEntity(url, JSONData.class);
             if (response.getStatusCode().isSameCodeAs(HttpStatus.OK)) {
-                JSONData jsonData = response.getBody();
-                if (!jsonData.isSuccess()) {
+                JSONData jsondata = response.getBody();
+                if (!jsondata.isSuccess()) {
                     return Optional.empty();
                 }
-
-                Object data = jsonData.getData();
-
+                Object data = jsondata.getData();
                 Board board = om.readValue(om.writeValueAsString(data), Board.class);
-
                 return Optional.ofNullable(board);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return Optional.empty();
     }
 }

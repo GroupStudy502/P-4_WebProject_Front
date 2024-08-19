@@ -15,6 +15,9 @@ public class BoardSaveServiceTest {
     @Autowired
     private BoardSaveService saveService;
 
+    @Autowired
+
+
     private Board board;
 
     @BeforeEach
@@ -22,6 +25,20 @@ public class BoardSaveServiceTest {
         board = new Board();
         board.setBid("freetalk");
         board.setBName("자유게시판");
+/*
+         board = Board.builder()
+                .bid("freetalk")
+                .bName("자유게시판")
+                 .gid(UUID.randomUUID().toString())
+                 .listAccessType(Authority.ALL)
+                 .writeAccessType(Authority.ALL)
+                 .commentAccessType(Authority.ALL)
+                 .viewAccessType(Authority.ALL)
+                 .replyAccessType(Authority.ALL)
+                 .locationAfterWriting("list")
+                .build();
+*/
+
     }
 
     @Test
