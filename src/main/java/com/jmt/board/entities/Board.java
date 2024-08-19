@@ -1,5 +1,6 @@
 package com.jmt.board.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jmt.global.entities.BaseMemberEntity;
 import com.jmt.member.constants.Authority;
 import jakarta.persistence.*;
@@ -20,7 +21,9 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true) // json 데이터가 잘못 넘어와도 오류가 안 나게끔 설정
 @Table(indexes = @Index(name = "idx_board_basic", columnList = "listOrder DESC, createdAt DESC"))
+
 public class Board extends BaseMemberEntity {
     @Id
     @Column(length = 30)
@@ -100,6 +103,8 @@ public class Board extends BaseMemberEntity {
      *
      * @return
      */
+
+
     public List<String> getCategories() {
         List<String> categories = new ArrayList<>();
 
