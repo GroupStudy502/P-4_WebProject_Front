@@ -7,6 +7,7 @@ import com.jmt.board.services.BoardConfigInfoService;
 import com.jmt.board.services.BoardDeleteService;
 import com.jmt.board.services.BoardInfoService;
 import com.jmt.board.services.BoardSaveService;
+import com.jmt.board.validators.BoardValidator;
 import com.jmt.global.ListData;
 import com.jmt.global.Utils;
 import com.jmt.global.exceptions.BadRequestException;
@@ -16,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +28,7 @@ public class BoardController {
     private final BoardSaveService saveService;
     private final BoardDeleteService deleteService;
     private final Utils utils;
-    private final Validator validator;
+    private final BoardValidator validator;
 
     // 게시판 설정
     @GetMapping("/config/{bid}")
@@ -95,4 +95,6 @@ public class BoardController {
 
         return new JSONData(item);
     }
+
+
 }
