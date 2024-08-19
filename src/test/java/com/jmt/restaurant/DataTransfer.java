@@ -42,6 +42,6 @@ public class DataTransfer {
     @DisplayName("메뉴 이미지 정보")
     void update4() {
         service.update4(1);
-        service.update4(2);
+        //service.update4(2);
     }
 }

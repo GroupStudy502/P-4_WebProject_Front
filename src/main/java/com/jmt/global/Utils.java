@@ -9,11 +9,11 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -23,11 +23,10 @@ public class Utils { // 빈의 이름 - utils
     private final MessageSource messageSource;
     private final HttpServletRequest request;
     private final DiscoveryClient discoveryClient;
+    private final RestTemplate restTemplate;
 
-
-    public Map<String, List<String>> getErrorMessages(Errors errors) { //JSON 받을 때는 에러를 직접
+    public Map<String, List<String>> getErrorMessages(Errors errors) {
         // FieldErrors
-
 
         Map<String, List<String>> messages = errors.getFieldErrors()
                 .stream()
@@ -80,19 +79,8 @@ public class Utils { // 빈의 이름 - utils
         }
     }
 
-    public String redirectUrl(String url) {
-        String _fromGateway = Objects.requireNonNullElse(request.getHeader("from-gateway"), "false");
-        String gatewayHost = Objects.requireNonNullElse(request.getHeader("gateway-host"), "");
-        boolean fromGateway = _fromGateway.equals("true");
-
-        return fromGateway ? request.getScheme() + "://" + gatewayHost + "/app" + url : request.getContextPath() + url;
-    }
-
     public String adminUrl(String url) {
         List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
         return String.format("%s%s", instances.get(0).getUri().toString(), url);
     }
-
 }
-
-
