@@ -30,5 +30,4 @@ public class RequestJoin {
 
     private String gid = UUID.randomUUID().toString();
 
-
 }
