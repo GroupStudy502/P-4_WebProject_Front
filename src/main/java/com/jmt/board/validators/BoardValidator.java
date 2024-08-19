@@ -4,10 +4,12 @@ import com.jmt.board.controllers.RequestBoard;
 import com.jmt.global.validators.PasswordValidator;
 import com.jmt.member.MemberUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Component
 @RequiredArgsConstructor
 public class BoardValidator implements Validator, PasswordValidator {
 
