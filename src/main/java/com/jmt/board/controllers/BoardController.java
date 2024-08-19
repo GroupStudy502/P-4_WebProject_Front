@@ -1,6 +1,5 @@
 package com.jmt.board.controllers;
 
-
 import com.jmt.board.entities.Board;
 import com.jmt.board.entities.BoardData;
 import com.jmt.board.exceptions.BoardNotFoundException;
@@ -97,4 +96,6 @@ public class BoardController {
 
         return new JSONData(item);
     }
+
+
 }
