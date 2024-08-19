@@ -1,5 +1,6 @@
 package com.jmt.file.services;
 
+import com.jmt.file.constants.FileStatus;
 import com.jmt.file.entities.FileInfo;
 import com.jmt.file.entities.QFileInfo;
 import com.jmt.file.exceptions.FileNotFoundException;
@@ -55,7 +56,7 @@ public class FileInfoService {
      * @param status   - ALL: 완료 + 미완료, DONE - 완료, UNDONE - 미완료
      * @return
      */
-    public List<FileInfo> getList(String gid, String location, com.jmt.file.constants.FileStatus status) {
+    public List<FileInfo> getList(String gid, String location, FileStatus status) {
 
         QFileInfo fileInfo = QFileInfo.fileInfo;
         BooleanBuilder andBuilder = new BooleanBuilder();
@@ -65,8 +66,8 @@ public class FileInfoService {
             andBuilder.and(fileInfo.location.eq(location));
         }
 
-        if (status != com.jmt.file.constants.FileStatus.ALL) {
-            andBuilder.and(fileInfo.done.eq(status == com.jmt.file.constants.FileStatus.DONE));
+        if (status != FileStatus.ALL) {
+            andBuilder.and(fileInfo.done.eq(status == FileStatus.DONE));
         }
 
         List<FileInfo> items = (List<FileInfo>) infoRepository.findAll(andBuilder, Sort.by(asc("createdAt")));
@@ -78,11 +79,11 @@ public class FileInfoService {
     }
 
     public List<FileInfo> getList(String gid, String location) {
-        return getList(gid, location, com.jmt.file.constants.FileStatus.DONE);
+        return getList(gid, location, FileStatus.DONE);
     }
 
     public List<FileInfo> getList(String gid) {
-        return getList(gid, null, com.jmt.file.constants.FileStatus.DONE);
+        return getList(gid, null, FileStatus.DONE);
     }
 
     /**
