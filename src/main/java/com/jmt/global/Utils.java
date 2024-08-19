@@ -1,5 +1,6 @@
 package com.jmt.global;
 
+import com.jmt.config.service.ConfigInfoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.ServiceInstance;
