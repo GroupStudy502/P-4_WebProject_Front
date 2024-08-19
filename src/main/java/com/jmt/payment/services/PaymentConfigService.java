@@ -1,7 +1,7 @@
 package com.jmt.payment.services;
 
-import com.jmt.config.service.ConfigInfoService;
 import com.jmt.global.SHA256;
+import com.jmt.global.services.ConfigInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class PaymentConfigService {
 
     public PaymentConfig get(Long oid, Integer price) {
         try {
-            Map<String, String> _data = infoService.getConfing("payment");
+            Map<String, String> _data = infoService.getConfig("payment");
             PaymentConfig config = new PaymentConfig();
             config.setSignKey(_data.get("signKey"));
             config.setSignKey(_data.get("mid"));

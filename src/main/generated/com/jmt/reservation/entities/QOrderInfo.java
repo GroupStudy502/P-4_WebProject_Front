@@ -1,7 +1,8 @@
-package com.jmt.order.entities;
+package com.jmt.reservation.entities;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.jmt.reservation.constants.ReservationStatus;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -14,7 +15,7 @@ import com.querydsl.core.types.dsl.PathInits;
  * QOrderInfo is a Querydsl query type for OrderInfo
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QOrderInfo extends EntityPathBase<OrderInfo> {
+public class QOrderInfo extends EntityPathBase<Reservation> {
 
     private static final long serialVersionUID = -1179444551L;
 
@@ -24,21 +25,11 @@ public class QOrderInfo extends EntityPathBase<OrderInfo> {
 
     public final com.jmt.global.entities.QBaseEntity _super = new com.jmt.global.entities.QBaseEntity(this);
 
-    public final StringPath address = createString("address");
-
-    public final StringPath addressSub = createString("addressSub");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
-
-    public final StringPath deliveryCompany = createString("deliveryCompany");
-
-    public final StringPath deliveryInvoice = createString("deliveryInvoice");
-
-    public final StringPath deliveryMemo = createString("deliveryMemo");
 
     public final com.jmt.member.entities.QMember member;
 
@@ -65,19 +56,15 @@ public class QOrderInfo extends EntityPathBase<OrderInfo> {
 
     public final StringPath payTid = createString("payTid");
 
-    public final StringPath receiverMobile = createString("receiverMobile");
-
     public final StringPath receiverName = createString("receiverName");
 
-    public final EnumPath<com.jmt.order.constants.OrderStatus> status = createEnum("status", com.jmt.order.constants.OrderStatus.class);
-
-    public final StringPath zoneCode = createString("zoneCode");
+    public final EnumPath<ReservationStatus> status = createEnum("status", ReservationStatus.class);
 
     public QOrderInfo(String variable) {
-        this(OrderInfo.class, forVariable(variable), INITS);
+        this(Reservation.class, forVariable(variable), INITS);
     }
 
-    public QOrderInfo(Path<? extends OrderInfo> path) {
+    public QOrderInfo(Path<? extends Reservation> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
@@ -86,10 +73,10 @@ public class QOrderInfo extends EntityPathBase<OrderInfo> {
     }
 
     public QOrderInfo(PathMetadata metadata, PathInits inits) {
-        this(OrderInfo.class, metadata, inits);
+        this(Reservation.class, metadata, inits);
     }
 
-    public QOrderInfo(Class<? extends OrderInfo> type, PathMetadata metadata, PathInits inits) {
+    public QOrderInfo(Class<? extends Reservation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.member = inits.isInitialized("member") ? new com.jmt.member.entities.QMember(forProperty("member")) : null;
         this.orderItem = inits.isInitialized("orderItem") ? new QOrderItem(forProperty("orderItem"), inits.get("orderItem")) : null;

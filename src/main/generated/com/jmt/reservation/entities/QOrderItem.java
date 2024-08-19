@@ -1,4 +1,4 @@
-package com.jmt.order.entities;
+package com.jmt.reservation.entities;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
