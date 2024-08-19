@@ -30,6 +30,8 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
+    public final NumberPath<Long> seq = createNumber("seq", Long.class);
+
     public QOrderItem(String variable) {
         super(OrderItem.class, forVariable(variable));
     }
