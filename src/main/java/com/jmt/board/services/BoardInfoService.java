@@ -282,4 +282,17 @@ public class BoardInfoService {
     public void addInfo(BoardData item) {
 
     }
+
+    public List<BoardData> getAllBoardData() {
+        QBoardData boardData = QBoardData.boardData;
+
+        List<BoardData> items = queryFactory.selectFrom(boardData)
+                .leftJoin(boardData.board)
+                .fetchJoin()
+                .leftJoin(boardData.member)
+                .fetchJoin()
+                .fetch();
+        return items;
+    }
+
 }
