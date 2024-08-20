@@ -48,8 +48,8 @@ public class DataTransferService {
     public void update1(int pageNo) {
 
         pageNo = Math.max(pageNo, 1);
-  //     String url = String.format("%s/rstr?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey() , pageNo);
-        String url = String.format("https://seoul.openapi.redtable.global/api/rstr?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+    String url = String.format("%s/rstr?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey() , pageNo);
+     //   String url = String.format("https://seoul.openapi.redtable.global/api/rstr?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
 
         ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
@@ -63,8 +63,8 @@ public class DataTransferService {
 
         List<Map<String, String>> tmp = result.getBody();
 
-        String url2 = String.format("https://seoul.openapi.redtable.global/api/rstr/oprt?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
-      //  String url2 = String.format("%s/rstr/oprt?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+  //      String url2 = String.format("https://seoul.openapi.redtable.global/api/rstr/oprt?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+        String url2 = String.format("%s/rstr/oprt?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
         ResponseEntity<ApiResult> result2 = restTemplate.getForEntity(URI.create(url2), ApiResult.class);
 
         List<Map<String, String>> tmp2 = result2.getBody().getBody();
@@ -135,8 +135,8 @@ public class DataTransferService {
 
         pageNo = Math.max(pageNo, 1);
 
-        String url = String.format("https://seoul.openapi.redtable.global/api/rstr/img?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
-   //     String url = String.format("%s/rstr/img?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+      //  String url = String.format("https://seoul.openapi.redtable.global/api/rstr/img?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+        String url = String.format("%s/rstr/img?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
 
         ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
@@ -172,8 +172,8 @@ public class DataTransferService {
 
         pageNo = Math.max(pageNo, 1);
 
-        String url = String.format("https://seoul.openapi.redtable.global/api/menu/korean?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
-    //    String url = String.format("%s/menu/korean?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+   //     String url = String.format("https://seoul.openapi.redtable.global/api/menu/korean?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+        String url = String.format("%s/menu/korean?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
 
         ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
@@ -188,8 +188,8 @@ public class DataTransferService {
         List<Map<String, String>> tmp = result.getBody();
         if (tmp == null || tmp.isEmpty()) return;
 
-        String url2 = String.format("https://seoul.openapi.redtable.global/api/menu-dscrn/korean?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
-        //String url2 = String.format("%s/menu-dscrn/korean?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+    //    String url2 = String.format("https://seoul.openapi.redtable.global/api/menu-dscrn/korean?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+      String url2 = String.format("%s/menu-dscrn/korean?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
         ResponseEntity<ApiResult> result2 = restTemplate.getForEntity(URI.create(url2), ApiResult.class);
 
         List<Map<String, String>> tmp2 = result2.getBody().getBody();
@@ -231,8 +231,8 @@ public class DataTransferService {
 
         pageNo = Math.max(pageNo, 1);
 
-        String url = String.format("https://seoul.openapi.redtable.global/api/food/img?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
-        //String url = String.format("%s/food/img?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+      //  String url = String.format("https://seoul.openapi.redtable.global/api/food/img?serviceKey=%s&pageNo=%d", serviceKey, pageNo);
+        String url = String.format("%s/food/img?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
 
         ResponseEntity<ApiResult> response = restTemplate.getForEntity(URI.create(url), ApiResult.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
