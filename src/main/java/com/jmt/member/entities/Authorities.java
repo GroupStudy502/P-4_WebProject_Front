@@ -3,10 +3,7 @@ package com.jmt.member.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jmt.member.constants.Authority;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
@@ -16,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Authorities {
     @Id
-    @JsonIgnore // json 변환시에 문제 발생 처리
+    @JsonIgnore
     @ManyToOne(fetch= FetchType.LAZY)
     private Member member;
 

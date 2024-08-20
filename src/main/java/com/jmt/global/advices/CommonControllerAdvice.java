@@ -52,6 +52,9 @@ public class CommonControllerAdvice {
         } else if (e instanceof AuthenticationException) {
             errorCode = "Fail.Login";
         } else if (e instanceof AuthorizationDeniedException) {
+            errorCode = "UnAuthorized";
+            errorCode = "Fail.Login";
+        } else if (e instanceof AuthorizationDeniedException) {
             errorCode = "Unauthorized";
         }
 
