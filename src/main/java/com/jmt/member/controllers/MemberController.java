@@ -69,10 +69,10 @@ public class MemberController {
 
         return new JSONData(token);
     }
-        // 회원정보 조회
-        @GetMapping("/list")
-        public JSONData list() {
-            List<Member> members = memberInfoService.getMembers();
-            return new JSONData(members);
-        }
+    // 회원정보 조회
+    @GetMapping("/list")
+    public JSONData list() {
+        List<Member> members = memberInfoService.getMembers();
+        return new JSONData(members);
     }
+}

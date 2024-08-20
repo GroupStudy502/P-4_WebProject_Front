@@ -36,7 +36,7 @@ public class Restaurant extends BaseEntity {
     private String rstrIntrcnCont; // 음식점소개내용
 
     @Column(length=50)
-    private String areaNm; // 지역명
+    private String areaNm; // 지역명(서울특별시+구)
 
     private Integer prdlSeatCnt; // 입식좌석수
     private Integer seatCnt; // 좌식좌석수
