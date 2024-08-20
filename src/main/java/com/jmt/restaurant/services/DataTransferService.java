@@ -33,6 +33,7 @@ public class DataTransferService {
     private final RestTemplate restTemplate;
     private final ConfigInfoService infoService;
 
+    private String serviceKey = "8Mu7gNxO98975QV25VMKBnsDC82WaomG1raYEiOXoi3kOTGsi89KCUJBxZI0HNz6";
     private static final String apiBaseUrl = "https://seoul.openapi.redtable.global/api";
 
     // 방법1
@@ -256,7 +257,6 @@ public class DataTransferService {
         if (items == null || items.isEmpty()) return;
         foodMenuImageRepository.saveAllAndFlush(items);
     }
-
 
     private Map<String, String> getExtra(List<Map<String, String>> items, String id, String mode) {
         if (items == null || items.isEmpty()) return null;

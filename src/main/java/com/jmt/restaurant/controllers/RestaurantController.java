@@ -14,7 +14,6 @@ public class RestaurantController {
 
     private final RestaurantInfoService infoService;
 
-
     /**
      * 목록 조회
      *
@@ -38,5 +37,4 @@ public class RestaurantController {
 
         return new JSONData(data);
     }
-
 }

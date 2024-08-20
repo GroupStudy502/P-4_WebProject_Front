@@ -12,19 +12,15 @@ import java.util.List;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class FoodMenu extends BaseEntity {
-
     @Id
     private Long menuId; //메뉴 ID
 
     @Column(nullable = false)
     private String menuNm; // 메뉴명
 
-
     private Integer menuPrice; // 메뉴 가격
 
-
     private Boolean spcltMenuYn; // 지역 특산메뉴여부
-
 
     private String spcltMenuNm; // 지역 특산메뉴명
 
