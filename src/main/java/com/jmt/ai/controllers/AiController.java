@@ -21,7 +21,7 @@ public class AiController {
 
         JSONData jsonData = new JSONData(response);
         jsonData.setSuccess(response != null);
-
+        System.out.println(jsonData.getData());
         return jsonData;
     }
 }
