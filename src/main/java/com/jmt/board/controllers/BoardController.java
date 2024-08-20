@@ -32,7 +32,7 @@ public class BoardController {
 
     // 게시판 설정
     @GetMapping("/config/{bid}")
-    public JSONData getConfig(@PathVariable String bid) {
+    public JSONData getConfig(@PathVariable("bid") String bid) {
 
         Board board = configInfoService.get(bid).orElseThrow(BoardNotFoundException::new);
 
