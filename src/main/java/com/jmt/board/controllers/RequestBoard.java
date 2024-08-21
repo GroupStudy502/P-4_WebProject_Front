@@ -1,10 +1,8 @@
 package com.jmt.board.controllers;
 
-import com.jmt.file.entities.FileInfo;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
