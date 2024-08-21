@@ -88,6 +88,8 @@ public class RestaurantInfoService {
                 .orderBy(restaurant.createdAt.desc()) // 정렬 조건 후에 추가
                 .fetch();
 
+        items.forEach(this::addInfo);
+
         // 페이징 데이터
         long total = repository.count(andBuilder); // 조회된 전체 갯수
 
@@ -109,7 +111,29 @@ public class RestaurantInfoService {
 
         // 추가 데이터 처리 -> 리뷰
 
+        // 추가 데이터 처리
+        addInfo(item);
+
         return item;
     }
     // 예약 가능한 정보, 제한된 상품 정보, 중복 예약 방지
+
+    /**
+     * 추가 데이터 처리
+     * 1. 예약 가능 일
+     * 2. 예약 가능 요일
+     * 3. 예약 가능 시간대
+     * @param item
+     */
+    private void addInfo(Restaurant item) {
+        // 운영 정보로 예약 가능 데이터 처리 S
+        String operInfo = item.getBsnsTmCn();
+        if (operInfo != null && StringUtils.hasText(operInfo.trim())) {
+            for (String oper : operInfo.split(",\\s*")) {
+                System.out.println(oper);
+            }
+        } // endif
+
+        // 운영 정보로 예약 가능 데이터 처리 E
+    }
 }
