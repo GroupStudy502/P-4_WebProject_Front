@@ -31,6 +31,7 @@ public class DataTransfer {
 
     @Test
     @DisplayName("메뉴 기본 정보")
+
     void update3() {
         for (int i = 1; i<= 100; i++) {
             service.update3(i);
