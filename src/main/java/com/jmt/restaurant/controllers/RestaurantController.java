@@ -15,7 +15,20 @@ public class RestaurantController {
     private final RestaurantInfoService infoService;
 
     /**
-     * 목록 조회
+     * 업종별 목록 조회
+     *
+     * @param search
+     */
+    @GetMapping("/list2")
+    public JSONData list2(@ModelAttribute RestaurantSearch search) {
+
+        ListData<Restaurant> data = infoService.getList2(search);
+
+        return new JSONData(data);
+    }
+
+    /**
+     * 검색 목록 조회
      *
      * @param search
       */

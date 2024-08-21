@@ -33,6 +33,50 @@ public class RestaurantInfoService {
     private final RestaurantRepository repository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * 업종별 목록 조회
+     * @param search
+     * @return
+     */
+    public ListData<Restaurant> getList2(RestaurantSearch search) {
+        int page = Math.max(search.getPage(), 1); // 페이지가 0이거나 음수이면 1이 나오도록 설정
+        int limit = search.getLimit(); // 한페이지당 보여줄 레코드 개수
+        limit = limit < 1 ? 10 : limit;
+        int offset = (page -1) * limit; // 레코드 시작 위치 구하기
+
+        QRestaurant restaurant = QRestaurant.restaurant;
+        BooleanBuilder andBuilder = new BooleanBuilder();
+
+        String category = search.getDbsnsStatmBzcndNm(); // dbsnsStatmBzcndNm - 업종명
+
+        if (StringUtils.hasText(category) && StringUtils.hasText(category.trim())) {
+            category = category.trim();
+            andBuilder.and(restaurant.dbsnsStatmBzcndNm.eq(category));
+        }
+
+        // 검색 데이터 처리
+        List<Restaurant> items = queryFactory.selectFrom(restaurant)
+                .leftJoin(restaurant.images)
+                .fetchJoin()
+                .where(andBuilder) // 검색 조건 후에 추가
+                .offset(offset)
+                .limit(limit)
+                .orderBy(restaurant.createdAt.desc()) // 정렬 조건 후에 추가
+                .fetch();
+
+        // 페이징 데이터
+        long total = repository.count(andBuilder); // 조회된 전체 갯수
+
+        Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
+
+        return new ListData<>(items, pagination);
+    }
+
+    /**
+     * 검색 목록 조회
+     * @param search
+     * @return
+     */
     public ListData<Restaurant> getList(RestaurantSearch search) {
         int page = Math.max(search.getPage(), 1); // 페이지가 0이거나 음수이면 1이 나오도록 설정
         int limit = search.getLimit(); // 한페이지당 보여줄 레코드 개수
