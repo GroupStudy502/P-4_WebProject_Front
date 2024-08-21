@@ -8,6 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -86,10 +87,10 @@ public class Restaurant extends BaseEntity {
     private List<LocalDate> availableDates; // 예약 가능한 일자
 
     @Transient
-    private List<Integer> availableWeeks; // 예약 가능한 요일, 0(일)~6(토)
+    private boolean[] availableWeeks; // 예약 가능한 요일, 0(일)~6(토), true - 가능, false - 불가능
 
     @Transient
     @JsonFormat(pattern="HH:mm")
-    private List<LocalTime> availableTimes; // 예약 가능한 시간대
+    private Map<String, List<LocalTime>> availableTimes; // 예약 가능한 시간대
 
 }
