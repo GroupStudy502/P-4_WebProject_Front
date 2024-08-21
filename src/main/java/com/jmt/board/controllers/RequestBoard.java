@@ -40,6 +40,4 @@ public class RequestBoard {
     private String longText1;
     private String longText2;
 
-    private List<FileInfo> editorImages;
-    private List<FileInfo> attachFiles;
 }
