@@ -43,12 +43,10 @@ public class AiController {
                 break;
             }
         }
-        //Long rstrId = 1121L;
-        //System.out.println(rstrId);
-        //Restaurant data = infoService.get(rstrId);
+
         return new JSONData(
-                "<a href='url/" + data.getRstrId() + "'>" +
-                data.getRstrNm() + "</a> " +
+                "<Link to='url/" + data.getRstrId() + "'>" +
+                data.getRstrNm() + "</Link> " +
                 data.getRstrRdnmAdr() + " " +
                 (data.getRstrIntrcnCont() != null ? data.getRstrIntrcnCont() : "") + " " +
                 (data.getRstrTelNo() != null ? data.getRstrTelNo() : "")
