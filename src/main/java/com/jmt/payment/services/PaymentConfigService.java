@@ -5,10 +5,7 @@ import com.jmt.global.services.ConfigInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +14,12 @@ public class PaymentConfigService {
 
     public PaymentConfig get(Long oid, Integer price) {
         try {
-            Map<String, String> _data = infoService.getConfig("payment");
+            Map<String, Object> _data = infoService.getConfig("payment");
             PaymentConfig config = new PaymentConfig();
-            config.setSignKey(_data.get("signKey"));
-            config.setSignKey(_data.get("mid"));
+            config.setSignKey((String)_data.get("signKey"));
+            config.setMid((String)_data.get("mid"));
 
-            List<String> payMethods = Arrays.stream(_data.getOrDefault("payMethodds", "")
-                    .split(",")).toList();
+            List<String> payMethods = (List<String>)_data.getOrDefault("payMethods", Collections.EMPTY_LIST);
 
             config.setPayMethods(payMethods);
 
