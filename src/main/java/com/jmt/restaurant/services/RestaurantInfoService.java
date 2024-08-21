@@ -249,7 +249,7 @@ public class RestaurantInfoService {
                     availableDates.add(date);
                 }
             }
-            //item.setAvailableDates(availableDates);
+            item.setAvailableDates(availableDates);
         } // endif
 
         // 운영 정보로 예약 가능 데이터 처리 E
