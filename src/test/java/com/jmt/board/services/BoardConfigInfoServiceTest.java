@@ -19,6 +19,5 @@ public class BoardConfigInfoServiceTest {
         System.out.println(board);
 
 
-
     }
 }
