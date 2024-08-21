@@ -34,6 +34,7 @@ public class BoardController {
     @GetMapping("/config/{bid}")
     public JSONData getConfig(@PathVariable("bid") String bid) {
 
+        System.out.println("bid :" + bid );
         Board board = configInfoService.get(bid).orElseThrow(BoardNotFoundException::new);
 
         return new JSONData(board);
