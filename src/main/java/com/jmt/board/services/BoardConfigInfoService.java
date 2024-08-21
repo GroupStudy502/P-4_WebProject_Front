@@ -26,7 +26,7 @@ public class BoardConfigInfoService {
      */
     public Optional<Board> get(String bid) {
         try {
-            String url = utils.adminUrl("/api/board/config" + bid);
+            String url = utils.adminUrl("/api/board/config/" + bid);
             ResponseEntity<JSONData> response = restTemplate.getForEntity(url, JSONData.class);
             if (response.getStatusCode().isSameCodeAs(HttpStatus.OK)) {
                 JSONData jsondata = response.getBody();
