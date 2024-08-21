@@ -37,29 +37,29 @@ public class ReservationValidator implements Validator {
         // 예약일 검증 S
         List<LocalDate> availableDates = restaurant.getAvailableDates();
         if (availableDates == null || availableDates.isEmpty() || !availableDates.contains(rDate)) {
-            errors.rejectValue("rDate","NotAvailable.restaurant");
+            errors.rejectValue("rDate", "NotAvailable.restaurant");
         } else { // 예약 가능일인 경우 예약 시간도 검증
             Map<String, List<LocalTime>> availableTimes = restaurant.getAvailableTimes();
             int _yoil = rDate.getDayOfWeek().getValue(); // 1(월) ~ 7(일)
             boolean possible = true;
+            List<LocalTime> _availableTimes = null;
+
             for (Map.Entry<String, List<LocalTime>> entry : availableTimes.entrySet()) {
                 String yoil = entry.getKey();
-                if (yoil.equals("평일") && _yoil > 5) {
-                    possible = false;
-                } else if (yoil.equals("토요일") && _yoil != 6) {
-                    possible = false;
-                } else if (yoil.equals("일요일") && _yoil != 7) {
-                    possible = false;
-                } else if (yoil.equals("주말") && !List.of(6,7).contains(_yoil)) {
-                    possible = false;
+                if (yoil.equals("매일")
+                        || (yoil.equals("평일") && _yoil > 0 && _yoil < 6)
+                        || (yoil.equals("토요일") && _yoil == 6)
+                        || (yoil.equals("일요일") && _yoil == 7)
+                        || (yoil.equals("주말") && (_yoil == 6 || _yoil == 7))) {
+                    _availableTimes = entry.getValue();
+                    break;
                 }
-                if (!possible) break;
             }
 
-            if (!possible) {
+            if (_availableTimes == null || _availableTimes.stream().noneMatch(t -> t.equals(rTime))) {
                 errors.rejectValue("rTime", "NotAvailable.restaurant");
             }
+            // 예약일 검증 E
         }
-        // 예약일 검증 E
     }
 }
