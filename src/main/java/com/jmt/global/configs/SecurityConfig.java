@@ -40,6 +40,8 @@ public class SecurityConfig {
                                     "/account",
                                     "/account/token",
                                     "/restaurant/**",
+                                    "/file/**",
+                                    "/upload/**",
                                     "/board/**",
                                      "/ai"
                             ).permitAll() // 회원가입, 로그인(토큰)은 모든 접근 가능

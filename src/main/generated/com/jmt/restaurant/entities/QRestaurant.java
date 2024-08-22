@@ -24,6 +24,8 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final StringPath areaNm = createString("areaNm");
 
+    public final StringPath awardInfoDscrn = createString("awardInfoDscrn");
+
     public final StringPath bsnsLcncNm = createString("bsnsLcncNm");
 
     public final StringPath bsnsTmCn = createString("bsnsTmCn");
@@ -44,6 +46,8 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final BooleanPath fgggMenuOfrYn = createBoolean("fgggMenuOfrYn");
 
+    public final ListPath<FoodMenu, QFoodMenu> foods = this.<FoodMenu, QFoodMenu>createList("foods", FoodMenu.class, QFoodMenu.class, PathInits.DIRECT2);
+
     public final BooleanPath hmdlvSaleYn = createBoolean("hmdlvSaleYn");
 
     public final StringPath hmpgUrl = createString("hmpgUrl");
@@ -56,6 +60,8 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
+    public final NumberPath<Double> naverGrad = createNumber("naverGrad", Double.class);
 
     public final StringPath onlineRsrvInfoCn = createString("onlineRsrvInfoCn");
 
