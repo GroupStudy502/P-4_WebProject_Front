@@ -1,20 +1,11 @@
 package com.jmt.config.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.jmt.config.entities.Configs;
-import com.jmt.config.repositories.ConfigsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.Optional;
-
-@Service
+//@Service
 @RequiredArgsConstructor
 public class ConfigInfoService {
-
+/*
     private final ConfigsRepository repository;
 
     public <T> Optional<T> get(String code, Class<T> clazz) {
@@ -48,4 +39,6 @@ public class ConfigInfoService {
             return Optional.ofNullable(null);
         }
     }
+
+ */
 }
