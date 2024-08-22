@@ -23,7 +23,6 @@ public class RestaurantController {
     public JSONData list(@ModelAttribute RestaurantSearch search) { // url로 데이터 요청이라 모델어튜리뷰트로 셋업
 
         ListData<Restaurant> data = infoService.getList(search);
-
         return new JSONData(data);
     }
 
