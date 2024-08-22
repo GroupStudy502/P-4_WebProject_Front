@@ -31,9 +31,9 @@ public class RestaurantController {
      * 검색 목록 조회
      *
      * @param search
-      */
+     */
     @GetMapping("/list")
-    public JSONData list(@ModelAttribute RestaurantSearch search) { // url로 데이터 요청이라 모델어튜리뷰트로 셋업
+    public JSONData list(@ModelAttribute RestaurantSearch search) {
 
         ListData<Restaurant> data = infoService.getList(search);
 
@@ -42,7 +42,7 @@ public class RestaurantController {
 
     /**
      *  식당 상세 조회
-      */
+     */
     @GetMapping("/info/{rstrId}")
     public JSONData info(@PathVariable("rstrId") Long rstrId) {
 
