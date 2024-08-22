@@ -15,9 +15,6 @@ public class BoardSaveServiceTest {
     @Autowired
     private BoardSaveService saveService;
 
-    @Autowired
-
-
     private Board board;
 
     @BeforeEach
