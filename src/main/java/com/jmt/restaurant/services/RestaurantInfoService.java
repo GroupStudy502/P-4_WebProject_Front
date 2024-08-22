@@ -139,7 +139,7 @@ public class RestaurantInfoService {
         if (operInfo == null || !StringUtils.hasText(operInfo.trim())) {
             operInfo = "매일 12:00~22:00";
         }
-
+    // 작동 확인
         if (operInfo != null && StringUtils.hasText(operInfo.trim())) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
