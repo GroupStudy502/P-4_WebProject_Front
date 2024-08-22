@@ -78,6 +78,11 @@ public class Restaurant extends BaseEntity {
 
     private String reprsntMenuNm; // 대표메뉴명
 
+    @Column(length=1000)
+    private String awardInfoDscrn; // 어워드 정보 설명
+
+    private Double naverGrad; // 네이버 평점
+
     @ToString.Exclude
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<RestaurantImage> images;
@@ -93,4 +98,8 @@ public class Restaurant extends BaseEntity {
     @JsonFormat(pattern="HH:mm")
     private Map<String, List<LocalTime>> availableTimes; // 예약 가능한 시간대
 
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private List<FoodMenu> foods;
 }
