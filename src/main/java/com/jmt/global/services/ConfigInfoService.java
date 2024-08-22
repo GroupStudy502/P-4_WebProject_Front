@@ -13,7 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
-@Service("configInfoService2")
+//@Service("configInfoService2")
+@Service
 @RequiredArgsConstructor
 public class ConfigInfoService {
     private final Utils utils;
