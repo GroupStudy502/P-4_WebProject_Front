@@ -111,7 +111,8 @@ public class FileInfoService {
     }
 
     // 파일 다운로드 주소
-    public String getFileDownloadUrl(FileInfo item) {
+    public String getFileDownloadUrl(FileInfo item)
+    {
         return utils.url("/file/download/" + item.getSeq());
     }
 
