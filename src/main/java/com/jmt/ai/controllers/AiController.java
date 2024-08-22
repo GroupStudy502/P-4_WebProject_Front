@@ -45,7 +45,7 @@ public class AiController {
         }
 
         return new JSONData(
-                "<a ref='url/" + data.getRstrId() + "'>" +
+                "<a href='url/" + data.getRstrId() + "'>" +
                 data.getRstrNm() + "</a> " +
                 data.getRstrRdnmAdr() + " " +
                 (data.getRstrIntrcnCont() != null ? data.getRstrIntrcnCont() : "") + " " +
