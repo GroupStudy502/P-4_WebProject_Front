@@ -46,8 +46,11 @@ public class WishListService {
     }
 
     public List<Long> getList(WishType type) {
-        BooleanBuilder builder = new BooleanBuilder();
+        if (!memberUtil.isLogin()) {
+            return null;
+        }
 
+        BooleanBuilder builder = new BooleanBuilder();
         QWishList wishList = QWishList.wishList;
         builder.and(wishList.member.eq(memberUtil.getMember()))
                 .and(wishList.wishType.eq(type));
@@ -56,5 +59,15 @@ public class WishListService {
                 .stream().map(WishList::getSeq).toList(); // 등록 번호만 필요
 
         return items;
+    }
+
+    public boolean check(Long seq, String type) {
+        if (memberUtil.isLogin()) {
+            WishListId wishListId = new WishListId(seq, WishType.valueOf(type), memberUtil.getMember());
+
+            return repository.existsById(wishListId);
+        }
+
+        return false;
     }
 }
