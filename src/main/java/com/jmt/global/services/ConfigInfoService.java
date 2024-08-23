@@ -81,4 +81,22 @@ public class ConfigInfoService {
 
         return null;
     }
+
+    public Boolean getUseHuggConfig() {
+        String url = utils.adminUrl("/api/config/useHugg");
+        ResponseEntity<JSONData> response = restTemplate.getForEntity(url, JSONData.class);
+        if (response.getStatusCode().isSameCodeAs(HttpStatus.OK) && response.getBody().isSuccess()) {
+            try {
+                JSONData data = response.getBody();
+                Boolean useHuggApi = om.readValue(om.writeValueAsString(data.getData()), new TypeReference<>() {
+                });
+                return useHuggApi;
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 }
