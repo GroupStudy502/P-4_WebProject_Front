@@ -39,6 +39,11 @@ public class RestaurantInfoService {
     private final JPAQueryFactory queryFactory;
     private final WishListService wishListService;
 
+    /**
+     * 목록 조회
+     * @param search
+     * @return
+     */
     public ListData<Restaurant> getList(RestaurantSearch search) {
         int page = Math.max(search.getPage(), 1); // 페이지가 0이거나 음수이면 1이 나오도록 설정
         int limit = search.getLimit(); // 한페이지당 보여줄 레코드 개수
@@ -53,6 +58,17 @@ public class RestaurantInfoService {
         String sopt = search.getSopt(); // 검색 옵션 All - 통합 검색
         String skey = search.getSkey();  // 검색 키워드를 통한 검색 ex) 음식분류, 옵션 검색
         String areaNm = search.getAreaNm(); // areaNm - 지역명(서울특별시+구)
+        String dbsnsStatmBzcndNm = search.getDbsnsStatmBzcndNm(); // dbsnsStatmBzcndNm - 업종명
+
+        // 지역명 검색
+        if (StringUtils.hasText(areaNm)) {
+            andBuilder.and(restaurant.areaNm.eq(areaNm));
+        }
+
+        // 업종별 검색
+        if (StringUtils.hasText(dbsnsStatmBzcndNm)) {
+            andBuilder.and(restaurant.dbsnsStatmBzcndNm.eq(dbsnsStatmBzcndNm));
+        }
 
         sopt = StringUtils.hasText(sopt) ? sopt : "All"; // 통합검색이 기본
         // 키워드가 있을 때 조건별 검색
