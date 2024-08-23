@@ -25,7 +25,6 @@ public class RestaurantController {
     public JSONData list(@ModelAttribute RestaurantSearch search) {
 
         ListData<Restaurant> data = infoService.getList(search);
-
         return new JSONData(data);
     }
 
@@ -36,7 +35,6 @@ public class RestaurantController {
     public JSONData info(@PathVariable("rstrId") Long rstrId) {
 
         Restaurant data = infoService.get(rstrId);
-
         return new JSONData(data);
     }
 
