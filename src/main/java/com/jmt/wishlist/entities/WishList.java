@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @IdClass(WishListId.class)
 public class WishList extends BaseEntity {
+
     @Id
     private Long seq; // 등록번호
 
@@ -27,4 +28,5 @@ public class WishList extends BaseEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member; // 기본키2
+    
 }

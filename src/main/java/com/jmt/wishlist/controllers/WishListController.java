@@ -1,5 +1,6 @@
 package com.jmt.wishlist.controllers;
 
+import com.jmt.global.rests.JSONData;
 import com.jmt.wishlist.constants.WishType;
 import com.jmt.wishlist.services.WishListService;
 import lombok.RequiredArgsConstructor;
@@ -7,12 +8,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/wish")
 @RequiredArgsConstructor
 public class WishListController {
 
     private final WishListService service;
+
+    @GetMapping("/{type}")
+    public JSONData list(@PathVariable("type") String type) {
+        List<Long> seqs = service.getList(WishType.valueOf(type));
+
+        return new JSONData(seqs);
+    }
 
     // 위시리스트 추가
     @GetMapping("/{type}/{seq}")
