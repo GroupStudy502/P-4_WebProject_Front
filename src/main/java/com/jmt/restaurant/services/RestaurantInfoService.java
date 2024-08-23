@@ -1,5 +1,6 @@
 package com.jmt.restaurant.services;
 
+import com.jmt.global.CommonSearch;
 import com.jmt.global.ListData;
 import com.jmt.global.Pagination;
 import com.jmt.restaurant.controllers.RestaurantSearch;
@@ -7,6 +8,8 @@ import com.jmt.restaurant.entities.QRestaurant;
 import com.jmt.restaurant.entities.Restaurant;
 import com.jmt.restaurant.exceptions.RestaurantNotFoundException;
 import com.jmt.restaurant.repositories.RestaurantRepository;
+import com.jmt.wishlist.constants.WishType;
+import com.jmt.wishlist.services.WishListService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -34,6 +37,7 @@ public class RestaurantInfoService {
     private final HttpServletRequest request; // 검색어 반영된 쿼리스트링 값
     private final RestaurantRepository repository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
+    private final WishListService wishListService;
 
     public ListData<Restaurant> getList(RestaurantSearch search) {
         int page = Math.max(search.getPage(), 1); // 페이지가 0이거나 음수이면 1이 나오도록 설정
@@ -125,6 +129,49 @@ public class RestaurantInfoService {
         return item;
     }
     // 예약 가능한 정보, 제한된 상품 정보, 중복 예약 방지
+
+    /**
+     * 찜하기 목록
+     * @return
+     */
+
+    public ListData<Restaurant> getWishList(CommonSearch search) {
+        int page = Math.max(search.getPage(),1);
+        int limit = search.getLimit();
+        limit = limit < 1 ? 10 : limit;
+
+        int offset = (page - 1) * limit;
+
+        List<Long> rstrIds = wishListService.getList(WishType.RESTAURANT);
+        if (rstrIds == null || rstrIds.isEmpty()) {
+            return new ListData<>();
+        }
+
+        QRestaurant restaurant = QRestaurant.restaurant;
+        BooleanBuilder andBuilder = new BooleanBuilder();
+        andBuilder.and(restaurant.rstrId.in(rstrIds));
+
+
+        // 검색 데이터 처리
+        List<Restaurant> items = queryFactory.selectFrom(restaurant)
+                .leftJoin(restaurant.images)
+                .fetchJoin()
+                .where(andBuilder) // 검색 조건 후에 추가
+                .offset(offset)
+                .limit(limit)
+                .orderBy(restaurant.createdAt.desc()) // 정렬 조건 후에 추가
+                .fetch();
+
+        items.forEach(this::addInfo);
+
+        // 페이징 데이터
+        long total = repository.count(andBuilder); // 조회된 전체 갯수
+
+        Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
+
+        return new ListData<>(items, pagination);
+    }
+
 
     /**
      * 추가 데이터 처리
