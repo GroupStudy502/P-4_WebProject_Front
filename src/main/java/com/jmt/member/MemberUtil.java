@@ -3,16 +3,21 @@ package com.jmt.member;
 import com.jmt.member.constants.Authority;
 import com.jmt.member.entities.Authorities;
 import com.jmt.member.entities.Member;
+import com.jmt.member.repositories.MemberRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class MemberUtil {
+
+    private final MemberRepository repository;
 
     public boolean isLogin() {
         return getMember() != null;
@@ -26,13 +31,17 @@ public class MemberUtil {
         return false;
     }
 
+
     public Member getMember() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof MemberInfo memberInfo) {
 
-            return memberInfo.getMember();
+            Member member = repository.findByEmail(memberInfo.getEmail()).orElse(null);
+            memberInfo.setMember(member);
+
+            return member;
         }
 
         return null;
