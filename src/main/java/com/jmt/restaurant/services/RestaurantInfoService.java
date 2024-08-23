@@ -1,5 +1,6 @@
 package com.jmt.restaurant.services;
 
+import com.jmt.global.CommonSearch;
 import com.jmt.global.ListData;
 import com.jmt.global.Pagination;
 import com.jmt.restaurant.controllers.RestaurantSearch;
@@ -7,6 +8,8 @@ import com.jmt.restaurant.entities.QRestaurant;
 import com.jmt.restaurant.entities.Restaurant;
 import com.jmt.restaurant.exceptions.RestaurantNotFoundException;
 import com.jmt.restaurant.repositories.RestaurantRepository;
+import com.jmt.wishlist.constants.WishType;
+import com.jmt.wishlist.services.WishListService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -34,6 +37,7 @@ public class RestaurantInfoService {
     private final HttpServletRequest request; // 검색어 반영된 쿼리스트링 값
     private final RestaurantRepository repository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
+    private final WishListService wishListService;
 
     public ListData<Restaurant> getList(RestaurantSearch search) {
         int page = Math.max(search.getPage(), 1); // 페이지가 0이거나 음수이면 1이 나오도록 설정
@@ -213,5 +217,40 @@ public class RestaurantInfoService {
         } // endif
 
         // 운영 정보로 예약 가능 데이터 처리 E
+    }
+
+    public ListData<Restaurant> getWishList(CommonSearch search) {
+           int page = Math.max(search.getPage(), 1);
+           int limit = search.getLimit();
+           limit = limit < 1 ? 10 : limit;
+           int offset = (page - 1) * limit;
+
+           QRestaurant restaurant = QRestaurant.restaurant;
+           List<Long> seqs = wishListService.getList(WishType.RESTAURANT);
+           if (seqs == null || seqs.isEmpty()) {
+
+               return new ListData<>();
+
+           }
+
+
+           QRestaurant qrestaurant = QRestaurant.restaurant;
+           BooleanBuilder andBuilder = new BooleanBuilder();
+           andBuilder.and(qrestaurant.seq.in(seqs));
+
+           List<Restaurant> items = queryFactory.selectFrom(restaurant)
+                .where(andBuilder)
+                   .leftJoin(restaurant.rstrId)
+                   .fetchJoin()
+                   .offset(offset)
+                   .limit(limit)
+                   .orderBy(restaurant.createdAt.desc())
+                   .fetch();
+
+           long total = repository.count(andBuilder);
+           int ranges = utils.isMobile() ? 5 : 10;
+           Pagination pagination = new Pagination(page, (int)total, ranges, limit, request);
+
+           return new ListData<>(items, pagination);
     }
 }
