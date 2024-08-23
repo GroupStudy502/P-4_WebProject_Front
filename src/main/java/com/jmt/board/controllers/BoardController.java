@@ -8,6 +8,7 @@ import com.jmt.board.services.BoardDeleteService;
 import com.jmt.board.services.BoardInfoService;
 import com.jmt.board.services.BoardSaveService;
 import com.jmt.board.validators.BoardValidator;
+import com.jmt.global.CommonSearch;
 import com.jmt.global.ListData;
 import com.jmt.global.Utils;
 import com.jmt.global.exceptions.BadRequestException;
@@ -16,11 +17,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardConfigInfoService configInfoService;
@@ -96,6 +98,12 @@ public class BoardController {
 
         return new JSONData(item);
     }
+    @GetMapping("/wish")
+    @PreAuthorize("isAuthenticated()")
+    public JSONData wishList(CommonSearch search) {
+        ListData<BoardData> data = infoService.getWishList(search);
 
+        return new JSONData(data);
+    }
 
 }
