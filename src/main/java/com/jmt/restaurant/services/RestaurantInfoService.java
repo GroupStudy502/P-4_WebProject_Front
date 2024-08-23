@@ -131,6 +131,49 @@ public class RestaurantInfoService {
     // 예약 가능한 정보, 제한된 상품 정보, 중복 예약 방지
 
     /**
+     *     식당 위시리스트
+     *
+     *     찜하기 목록
+     *
+     *      @return
+      */
+    public ListData<Restaurant> getWishList(CommonSearch search) {
+        int page = Math.max(search.getPage(), 1);
+        int limit = search.getLimit();
+        limit = limit < 1 ? 10 : limit;
+        int offset = (page - 1) * limit;
+
+
+        List<Long> rstrIds = wishListService.getList(WishType.RESTAURANT);
+        if (rstrIds == null || rstrIds.isEmpty()) {
+
+            return new ListData<>();
+
+        }
+
+        QRestaurant restaurant = QRestaurant.restaurant;
+        BooleanBuilder andBuilder = new BooleanBuilder();
+        andBuilder.and(restaurant.rstrId.in(rstrIds));
+
+        List<Restaurant> items = queryFactory.selectFrom(restaurant)
+                .leftJoin(restaurant.images)
+                .fetchJoin()
+                .where(andBuilder)
+                .offset(offset)
+                .limit(limit)
+                .orderBy(restaurant.createdAt.desc())
+                .fetch();
+
+        items.forEach(this::addInfo);
+
+        long total = repository.count(andBuilder); // 조회된 전체 갯수
+
+        Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
+
+        return new ListData<>(items, pagination);
+    }
+
+    /**
      * 추가 데이터 처리
      * 1. 예약 가능 일
      * 2. 예약 가능 요일
@@ -219,37 +262,5 @@ public class RestaurantInfoService {
         // 운영 정보로 예약 가능 데이터 처리 E
     }
 
-    // 식당 위시리스트
-    public ListData<Restaurant> getWishList(CommonSearch search) {
-           int page = Math.max(search.getPage(), 1);
-           int limit = search.getLimit();
-           limit = limit < 1 ? 10 : limit;
-           int offset = (page - 1) * limit;
 
-           QRestaurant restaurant = QRestaurant.restaurant;
-           List<Long> seqs = wishListService.getList(WishType.RESTAURANT);
-           if (seqs == null || seqs.isEmpty()) {
-
-               return new ListData<>();
-
-           }
-
-
-           QRestaurant qrestaurant = QRestaurant.restaurant;
-           BooleanBuilder andBuilder = new BooleanBuilder();
-           andBuilder.and(qrestaurant.rstrId.in(seqs));
-
-           List<Restaurant> items = queryFactory.selectFrom(restaurant)
-                .where(andBuilder)
-                   .offset(offset)
-                   .limit(limit)
-                   .orderBy(restaurant.createdAt.desc())
-                   .fetch();
-
-           long total = repository.count(andBuilder);
-
-           Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
-
-           return new ListData<>(items, pagination);
-    }
 }
