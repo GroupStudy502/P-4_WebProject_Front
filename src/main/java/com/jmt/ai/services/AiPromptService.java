@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jmt.ai.controllers.RequestMessage;
 import com.jmt.global.services.ConfigInfoService;
+import com.jmt.restaurant.entities.QFoodMenu;
 import com.jmt.restaurant.entities.QRestaurant;
 import com.jmt.restaurant.entities.Restaurant;
+import com.jmt.restaurant.repositories.FoodMenuRepository;
 import com.jmt.restaurant.repositories.RestaurantRepository;
 import com.jmt.restaurant.services.RestaurantInfoService;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,10 +24,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +34,11 @@ public class AiPromptService {
     private final ConfigInfoService infoService;
     private final ObjectMapper om;
     private final RestTemplate restTemplate;
-    private final RestaurantRepository repository; // 카운트 할 때 필요
+    private final RestaurantRepository restaurantRepository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
     private final RestaurantInfoService restaurantInfoService;
+    private final FoodMenuRepository foodRepository;
+    private final EntityManager em;
 
     public String prompt(String message) {
         Map<String, String> config = infoService.getApiConfig();
@@ -83,63 +87,130 @@ public class AiPromptService {
         return null;
     }
 
+    public Restaurant onePick(String message) {
+
+        TypedQuery<Restaurant> query = em.createQuery("SELECT r FROM Restaurant r left join r.foods m where r.rstrLnnoAdres like :k1 and m.menuNm = :k2", Restaurant.class);
+        return null;
+    }
+
     public Restaurant onePickRestaurant(String message) {
 
-
         QRestaurant restaurant = QRestaurant.restaurant;
-        BooleanBuilder andBuilder = new BooleanBuilder();
+        QFoodMenu foodMenu = QFoodMenu.foodMenu;
+
+        BooleanBuilder restBuilder = new BooleanBuilder();
+        AtomicReference<String> keyAddr = new AtomicReference<>("");
+        AtomicReference<String> keyMenu = new AtomicReference<>("");
+        String keyEtc = "";
+        AtomicBoolean sqlFood = new AtomicBoolean(false);
+        AtomicBoolean existAddr = new AtomicBoolean(false);
+        AtomicBoolean existMenu = new AtomicBoolean(false);
 
         Restaurant data;
-        BooleanExpression condition = null;
 
         message = message
                 .replace("앞", "")
                 .replace("역전", "")
                 .replace("부근", "")
-                .replace("에서", "")
                 .replace("가게", "")
                 .replace("맛집", "")
                 .replace("근처", "")
                 .replace("알려줘", "")
                 .replace("말해줘", "")
                 .replace("알려주세요", "")
+                .replace("안녕하세요", "")
+                .replace("가르쳐", "")
+                .replace("가리켜", "")
                 .replace("맛있는", "")
+                .replace("가 ", " ")
+                .replace("이 ", " ")
+                .replace("을 ", " ")
+                .replace("를 ", " ")
+                .replace("에서 ", " ")
+                .replace("옆 ", " ")
                 .replace("식당", "")
                 .replace("집", "");
 
         List<String> arr = Arrays.asList(message.split(" "));
+
         arr.forEach(a -> {
+            if(!StringUtils.hasText(a)) return;
+            if(existAddr.get() && existMenu.get()) return;
+
+            System.out.println("a => " + a);
+            boolean isEtc = true;  // 지명, 메뉴명 아닌 키워드
 
             BooleanBuilder b = new BooleanBuilder();
             b.and(restaurant.rstrLnnoAdres.concat(restaurant.rstrRdnmAdr).contains(a));
-            long total = repository.count(b);
+            long cntAddr = restaurantRepository.count(b);
 
-            BooleanBuilder b1 = new BooleanBuilder();
-            b1.and(restaurant.reprsntMenuNm.contains(a));
-            long total1 = repository.count(b1);
+            if (cntAddr > 20) { // a : 주소
+                isEtc = false;
+                restBuilder.and(restaurant.rstrLnnoAdres.concat(restaurant.rstrRdnmAdr).contains(a));
+                keyAddr.set("%" + a + "%");
 
-            System.out.println(a + " rstrLnnoAdres count:" +  total + " reprsntMenuNm:" + total1 );
+                existAddr.set(true);
 
-            if(total > 20) { // a : 지명
-                andBuilder.and(restaurant.rstrLnnoAdres.concat(restaurant.rstrRdnmAdr).contains(a));
+                System.out.println("cntAddr => " + cntAddr);
+            } else {
+
+                // 대표 메뉴에 있는지
+                BooleanBuilder b1 = new BooleanBuilder();
+                b1.and(restaurant.reprsntMenuNm.contains(a));
+                long cntRpr = restaurantRepository.count(b1);
+                System.out.println("cntRpr => " + cntRpr);
+
+                // 메뉴 리스트 에 있는지
+                BooleanBuilder b2 = new BooleanBuilder();
+                b2.and(foodMenu.menuNm.contains(a));
+                long cntMenu = foodRepository.count(b2);
+                System.out.println("cntMenu => " + cntMenu);
+
+                if (cntMenu > 50) { // a : 메뉴명 있음
+                    isEtc = false;
+                    existMenu.set(true);
+                    sqlFood.set(true);
+
+                    keyMenu.set("%" + a + "%");
+
+                } else if (cntRpr > 0) { // a : 대표 메뉴에 있음
+                    isEtc = true;
+                }
+
             }
-            if(total1 > 2) {
-                andBuilder.and(restaurant.reprsntMenuNm.contains(a));
-            }
+            if (isEtc) {
 
-            andBuilder.and(restaurant.rstrNm.concat(restaurant.rstrIntrcnCont).contains(a));
+                BooleanBuilder b3 = new BooleanBuilder();
+                b3.and(restaurant.rstrNm.concat(restaurant.rstrIntrcnCont).contains(a));
+
+                long cntEtc = restaurantRepository.count(b3);
+                if (cntEtc >= 1) {
+                    restBuilder.and(restaurant.rstrNm.concat(restaurant.rstrIntrcnCont).contains(a));
+                    sqlFood.set(false);
+                    existMenu.set(true);
+
+                    keyMenu.set("%" + a + "%");
+
+                }
+            }
         });
 
-        long total = repository.count(andBuilder);
+        long total = 0;
+
+        System.out.println("keyAddr => " + keyAddr.get() + " keyMenu => " + keyMenu.get()  );
+        if(sqlFood.get()) { // JPA 쿼리 수행
+            total = restaurantRepository.getCountBy(keyAddr.get(), keyMenu.get());
+        }else {   // Querydsl 쿼리 수행
+            total = restaurantRepository.count(restBuilder);
+        }
 
         System.out.println("total:" + total);
 
         if (total == 0) { // 없으면 랜덤 으로
             while (true) {
-                Long rstrId = Long.valueOf((long) (Math.random() * 2000 + 1000));
+                Long rstrId = Long.valueOf((long) (new Random()).nextInt(2000) + 1);
                 try {
                     data = restaurantInfoService.get(rstrId);  //3693L
-                    System.out.println(data);
                 }catch (Exception e){
                     continue;
                 }
@@ -147,14 +218,23 @@ public class AiPromptService {
                     break;
                 }
             }
+            System.out.println("===== 없어서 랜덤 pick =====");
             return data;
         }
+        if(sqlFood.get()) { // JPA 쿼리 수행
+            List<Restaurant> items = restaurantRepository.findRestaurants(keyAddr.get(), keyMenu.get());
+            int row = (new Random()).nextInt(items.size());
 
-        // 검색 데이터 처리
-        data = queryFactory.selectFrom(restaurant)
-                .where(andBuilder) // 검색 조건 후에 추가
-                .fetchFirst();
+            data = items.get(row);
+            System.out.println("===== JPA 쿼리 pick =====");
 
+        } else { // queryDsl 수행
+            data = queryFactory.selectFrom(restaurant)
+                    .where(restBuilder)
+                    .fetchFirst();
+
+            System.out.println("===== queryDsl pick =====");
+        }
         return data;
     }
 

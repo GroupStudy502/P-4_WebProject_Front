@@ -36,13 +36,14 @@ public class AiController {
         }
 
         Restaurant data= service.onePickRestaurant(message);
-
+        System.out.println(data);
         return new JSONData(
-                "<a href='/restaurant/info/" + data.getRstrId() + "'>" +
-                data.getRstrNm() + "</a> " +
+                "고객님께 적당한 식당은 <a href='/restaurant/info/" + data.getRstrId() + "'>" +
+                data.getRstrNm() + "</a> 입니다<br/>" +
                 data.getRstrRdnmAdr() + " " +
                 (data.getRstrIntrcnCont() != null ? data.getRstrIntrcnCont() : "") + " " +
-                (data.getRstrTelNo() != null ? data.getRstrTelNo() : "")
+                (data.getRstrTelNo() != null ? "연락처는 " + data.getRstrTelNo() + "입니다." : "")
+
         );
     }
 }

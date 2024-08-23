@@ -33,7 +33,6 @@ public class RestaurantController {
     public JSONData info(@PathVariable("rstrId") Long rstrId) {
 
         Restaurant data = infoService.get(rstrId);
-
         return new JSONData(data);
     }
 }
