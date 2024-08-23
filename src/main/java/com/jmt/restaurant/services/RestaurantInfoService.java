@@ -219,6 +219,7 @@ public class RestaurantInfoService {
         // 운영 정보로 예약 가능 데이터 처리 E
     }
 
+    // 식당 위시리스트
     public ListData<Restaurant> getWishList(CommonSearch search) {
            int page = Math.max(search.getPage(), 1);
            int limit = search.getLimit();
@@ -236,20 +237,18 @@ public class RestaurantInfoService {
 
            QRestaurant qrestaurant = QRestaurant.restaurant;
            BooleanBuilder andBuilder = new BooleanBuilder();
-           andBuilder.and(qrestaurant.seq.in(seqs));
+           andBuilder.and(qrestaurant.rstrId.in(seqs));
 
            List<Restaurant> items = queryFactory.selectFrom(restaurant)
                 .where(andBuilder)
-                   .leftJoin(restaurant.rstrId)
-                   .fetchJoin()
                    .offset(offset)
                    .limit(limit)
                    .orderBy(restaurant.createdAt.desc())
                    .fetch();
 
            long total = repository.count(andBuilder);
-           int ranges = utils.isMobile() ? 5 : 10;
-           Pagination pagination = new Pagination(page, (int)total, ranges, limit, request);
+
+           Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
 
            return new ListData<>(items, pagination);
     }

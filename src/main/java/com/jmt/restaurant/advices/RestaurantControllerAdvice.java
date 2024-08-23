@@ -18,7 +18,4 @@ public class RestaurantControllerAdvice {
     public List<Long> RestaurantWishList() {
         return wishListService.getList(WishType.RESTAURANT);
     }
-
-
-
 }
