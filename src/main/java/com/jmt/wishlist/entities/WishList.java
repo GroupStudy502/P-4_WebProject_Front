@@ -9,23 +9,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Entity
 @Data
+@Entity
 @Builder
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @IdClass(WishListId.class)
 public class WishList extends BaseEntity {
+
     @Id
-    private Long seq;
+    private Long seq; // 등록번호
 
     @Id
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
-    private WishType wishType;
+    private WishType wishType;  // 기본키
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
+    private Member member; // 기본키2
+    
 }

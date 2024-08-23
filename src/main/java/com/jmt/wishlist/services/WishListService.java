@@ -18,6 +18,7 @@ import static org.springframework.data.domain.Sort.Order.desc;
 @Service
 @RequiredArgsConstructor
 public class WishListService {
+
     private final MemberUtil memberUtil;
     private final WishListRepository repository;
 
@@ -45,17 +46,14 @@ public class WishListService {
     }
 
     public List<Long> getList(WishType type) {
-        if (!memberUtil.isLogin()) {
-            return null;
-        }
-
         BooleanBuilder builder = new BooleanBuilder();
+
         QWishList wishList = QWishList.wishList;
         builder.and(wishList.member.eq(memberUtil.getMember()))
                 .and(wishList.wishType.eq(type));
 
-        List<Long> items = ((List<WishList>)repository.findAll(builder, Sort.by(desc("createdAt")))).stream().map(WishList::getSeq).toList();
-
+        List<Long> items = ((List<WishList>)repository.findAll(builder, Sort.by(desc("createdAt"))))
+                .stream().map(WishList::getSeq).toList(); // 등록 번호만 필요
 
         return items;
     }

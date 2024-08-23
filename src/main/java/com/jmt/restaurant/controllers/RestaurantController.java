@@ -16,7 +16,6 @@ public class RestaurantController {
 
     private final RestaurantInfoService infoService;
 
-
     /**
      * 목록 조회
      *
@@ -42,9 +41,9 @@ public class RestaurantController {
     }
 
     @GetMapping("/wish")
-    @PreAuthorize("isAuthenticated()") // 로그인된 회원만 가능하게 설정
+    @PreAuthorize("isAuthenticated()")
     public JSONData wishList(@ModelAttribute CommonSearch search) {
-        ListData<Restaurant> data = infoService.getWishList(search);
+        ListData data = infoService.getWishList(search);
 
         return new JSONData(data);
     }
