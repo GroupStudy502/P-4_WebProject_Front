@@ -4,15 +4,21 @@ import com.jmt.board.controllers.BoardDataSearch;
 import com.jmt.board.controllers.RequestBoard;
 import com.jmt.board.entities.Board;
 import com.jmt.board.entities.BoardData;
+import com.jmt.board.entities.CommentData;
 import com.jmt.board.entities.QBoardData;
 import com.jmt.board.exceptions.BoardDataNotFoundException;
 import com.jmt.board.exceptions.BoardNotFoundException;
 import com.jmt.board.repositories.BoardDataRepository;
+import com.jmt.board.services.comment.CommentInfoService;
+import com.jmt.file.entities.FileInfo;
+import com.jmt.file.services.FileInfoService;
 import com.jmt.global.CommonSearch;
 import com.jmt.global.ListData;
 import com.jmt.global.Pagination;
-import com.jmt.global.Utils;
 import com.jmt.global.constants.DeleteStatus;
+import com.jmt.member.MemberUtil;
+import com.jmt.member.constants.Authority;
+import com.jmt.member.entities.Member;
 import com.jmt.wishlist.constants.WishType;
 import com.jmt.wishlist.services.WishListService;
 import com.querydsl.core.BooleanBuilder;
@@ -22,6 +28,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -40,10 +47,11 @@ public class BoardInfoService {
     private final JPAQueryFactory queryFactory;
     private final BoardDataRepository repository;
     private final BoardConfigInfoService configInfoService;
+    private final FileInfoService fileInfoService;
     private final WishListService wishListService;
+    private final CommentInfoService commentInfoService;
     private final HttpServletRequest request;
-    private final Utils utils;
-
+    private final MemberUtil memberUtil;
 
     /**
      * 게시글 목록 조회
@@ -90,7 +98,7 @@ public class BoardInfoService {
             bids = List.of(bid);
         }
 
-        if (bids != null && !bids.isEmpty()) { // 게시판 여러개 조회
+        if (bids != null && !bids.isEmpty()){ // 게시판 여러개 조회
             andBuilder.and(boardData.board.bid.in(bids));
         }
 
@@ -188,7 +196,7 @@ public class BoardInfoService {
         // 페이징 처리
         int ranges = board.getPageCountPc();
 
-        Pagination pagination = new Pagination(page, (int) total, ranges, limit, request);
+        Pagination pagination = new Pagination(page, (int)total, ranges, limit, request);
 
         return new ListData<>(items, pagination);
     }
@@ -212,7 +220,6 @@ public class BoardInfoService {
 
     /**
      * 게시판 개별 조회
-     *
      * @param seq
      * @return
      */
@@ -246,6 +253,11 @@ public class BoardInfoService {
         // 추가 데이터 처리
         addInfo(item);
 
+        // 댓글 목록 추가 처리
+
+        List<CommentData> comments = commentInfoService.getList(seq);
+        item.setComments(comments);
+
         return item;
     }
 
@@ -276,7 +288,6 @@ public class BoardInfoService {
     public RequestBoard getForm(BoardData item) {
         return getForm(item, DeleteStatus.UNDELETED);
     }
-
 
     /**
      * 내가 찜한 게시글 목록
@@ -311,38 +322,99 @@ public class BoardInfoService {
                 .fetch();
 
         items.forEach(this::addInfo);
+
         long total = repository.count(andBuilder);
-        Pagination pagination = new Pagination(page, (int) total, 10, limit, request);
+        Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
 
         return new ListData<>(items, pagination);
     }
 
-
     /**
-     * 추가 데이터 처리
-     * - 업로드한 파일 목록
-     * 에디터 이미지 목록, 첨부 파일 이미지 목록
-     * - 권한 : 글쓰기, 글수정, 글 삭제, 글 조회 가능 여부
-     * - 댓글 ..
+     *
+     *
+     *  추가 데이터 처리
+     *      - 업로드한 파일 목록
+     *          에디터 이미지 목록, 첨부 파일 이미지 목록
+     *      - 권한 : 글쓰기, 글수정, 글 삭제, 글 조회 가능 여부
+     *      - 댓글 ..
      *
      * @param item
      */
     public void addInfo(BoardData item) {
+        // 업로드한 파일 목록 S
+        String gid = item.getGid();
+        List<FileInfo> editorImages = fileInfoService.getList(gid, "editor");
+        List<FileInfo> attachFiles = fileInfoService.getList(gid, "attach");
 
+        item.setEditorImages(editorImages);
+        item.setAttachFiles(attachFiles);
+        // 업로드한 파일 목록 E
+
+        /* 게시글 권한 정보 처리 S */
+        boolean editable = false, commentable = false, mine = false;
+
+        // 관리자는 모든 권한 가능
+        if (memberUtil.isAdmin()) {
+            editable = commentable = true;
+        }
+
+        // 회원 - 직접 작성한 게시글인 경우만 수정,삭제(editable)
+        Member boardMember = item.getMember(); // 게시글을 작성한 회원
+        Member loggedMember = item.getMember(); // 로그인한 회원
+        if (boardMember != null && memberUtil.isLogin() && boardMember.getEmail().equals(loggedMember.getEmail())) {
+            editable = true; // 수정, 삭제 가능
+            mine = true; // 게시글 소유자
+        }
+
+        // 비회원 - 비회원 비밀번호를 검증한 경우 - 게시글 소유자, 수정, 삭제 가능
+        // 비회원이 비밀번호를 검증한 경우 세션 키 : confirmed_board_data_게시글번호, 값 true
+        HttpSession session = request.getSession();
+        Boolean guestConfirmed = (Boolean)session.getAttribute("confirm_board_data_" + item.getSeq());
+        if (boardMember == null && guestConfirmed != null && guestConfirmed) { // 비회원 비밀번호가 인증된 경우
+            editable = true;
+            mine = true;
+        }
+
+        // 댓글 작성 가능 여부 - 전체 : 모두 가능(비회원 + 회원 + 관리자), 회원 + 관리자 , 관리자
+        Board board = item.getBoard();
+        Authority authority = board.getCommentAccessType();
+        if (authority == Authority.ALL || memberUtil.isAdmin()) {
+            commentable = true;
+        }
+
+        if (authority == Authority.USER && memberUtil.isLogin()) {
+            commentable = true;
+        }
+
+        item.setEditable(editable);
+        item.setCommentable(commentable);
+        item.setMine(mine);
+
+        /* 게시글 권한 정보 처리 E */
+
+        // 게시글 버튼 노출 권한 처리 S
+        boolean showEdit = false, showList= false, showDelete = false;
+
+        Authority editAuthority = board.getWriteAccessType(); // 글작성, 수정 권한
+        Authority listAuthority = board.getListAccessType(); // 글목록 보기 권한
+
+
+        if (editAuthority == Authority.ALL || boardMember == null ||
+                (editAuthority == Authority.USER && memberUtil.isLogin())) { // 수정 삭제 권한이 ALL인 경우, 비회원인 경우, 회원만 가능한 경우 + 로그인한 경우 수정, 삭제 버튼 클릭시 비회원 검증 하므로 노출
+            showEdit = showDelete = true;
+        }
+
+        if (listAuthority == Authority.ALL || (listAuthority == Authority.USER && memberUtil.isLogin())) {
+            showList = true;
+        }
+
+        if (memberUtil.isAdmin()) { // 관리자는 모든 권한 가능
+            showEdit = showDelete = showList = true;
+        }
+
+        item.setShowEdit(showEdit);
+        item.setShowDelete(showDelete);
+        item.setShowList(showList);
+        // 게시글 버튼 노출 권한 처리 E
     }
-
-    public List<BoardData> getAllBoardData() {
-        QBoardData boardData = QBoardData.boardData;
-
-        List<BoardData> items = queryFactory.selectFrom(boardData)
-                .leftJoin(boardData.board)
-                .fetchJoin()
-                .leftJoin(boardData.member)
-                .fetchJoin()
-                .fetch();
-
-
-        return items;
-    }
-
 }

@@ -3,10 +3,8 @@ package com.jmt.board.controllers;
 import com.jmt.board.entities.Board;
 import com.jmt.board.entities.BoardData;
 import com.jmt.board.exceptions.BoardNotFoundException;
-import com.jmt.board.services.BoardConfigInfoService;
-import com.jmt.board.services.BoardDeleteService;
-import com.jmt.board.services.BoardInfoService;
-import com.jmt.board.services.BoardSaveService;
+import com.jmt.board.services.*;
+import com.jmt.board.services.comment.CommentInfoService;
 import com.jmt.board.validators.BoardValidator;
 import com.jmt.global.CommonSearch;
 import com.jmt.global.ListData;
@@ -22,26 +20,27 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardConfigInfoService configInfoService;
     private final BoardInfoService infoService;
     private final BoardSaveService saveService;
     private final BoardDeleteService deleteService;
-    private final Utils utils;
+    private final BoardViewCountService viewCountService;
+    private final CommentInfoService commentInfoService;
     private final BoardValidator validator;
+    private final Utils utils;
 
     // 게시판 설정
     @GetMapping("/config/{bid}")
     public JSONData getConfig(@PathVariable("bid") String bid) {
 
-        System.out.println("bid :" + bid );
         Board board = configInfoService.get(bid).orElseThrow(BoardNotFoundException::new);
 
         return new JSONData(board);
-
     }
+
     // 글쓰기
     @PostMapping("/write/{bid}")
     public ResponseEntity<JSONData> write(@PathVariable("bid") String bid, @RequestBody @Valid RequestBoard form, Errors errors) {
@@ -49,8 +48,8 @@ public class BoardController {
         form.setMode("write");
 
         return save(form, errors);
-
     }
+
     // 글 수정
     @PatchMapping("/update/{seq}")
     public ResponseEntity<JSONData> update(@PathVariable("seq") Long seq, @RequestBody @Valid RequestBoard form, Errors errors) {
@@ -60,8 +59,9 @@ public class BoardController {
         return save(form, errors);
     }
 
-    // 글 작성, 수정처리
-    private ResponseEntity<JSONData> save(RequestBoard form , Errors errors) {
+    // 글 작성, 수정 처리
+    private ResponseEntity<JSONData> save(RequestBoard form, Errors errors) {
+
         validator.validate(form, errors);
 
         if (errors.hasErrors()) { // 검증 실패
@@ -69,27 +69,29 @@ public class BoardController {
         }
 
         BoardData data = saveService.save(form);
-
+        data.setBoard(null);
+        data.setComments(null); // 코멘트 부분 에러로 일단 null값 넣음.
         JSONData jsonData = new JSONData(data);
         HttpStatus status = HttpStatus.CREATED;
         jsonData.setStatus(status);
 
         return ResponseEntity.status(status).body(jsonData);
-
     }
+
     @GetMapping("/info/{seq}")
     public JSONData info(@PathVariable("seq") Long seq) {
         BoardData item = infoService.get(seq);
+
+        viewCountService.update(seq); // 조회수 카운트
 
         return new JSONData(item);
     }
 
     @GetMapping("/list/{bid}")
-    public JSONData list(@PathVariable("bid") String bid ,@ModelAttribute BoardDataSearch search) {
+    public JSONData list(@PathVariable("bid") String bid, @ModelAttribute BoardDataSearch search) {
         ListData<BoardData> data = infoService.getList(bid, search);
 
         return new JSONData(data);
-
     }
 
     @DeleteMapping("/delete/{seq}")
@@ -98,6 +100,7 @@ public class BoardController {
 
         return new JSONData(item);
     }
+
     @GetMapping("/wish")
     @PreAuthorize("isAuthenticated()")
     public JSONData wishList(CommonSearch search) {
@@ -105,5 +108,4 @@ public class BoardController {
 
         return new JSONData(data);
     }
-
 }
