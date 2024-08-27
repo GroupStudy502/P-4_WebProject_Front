@@ -1,14 +1,18 @@
 package com.jmt.board.controllers;
 
 import com.jmt.board.entities.BoardData;
+import com.jmt.board.entities.QBoardData;
 import com.jmt.board.services.BoardInfoService;
 import com.jmt.board.services.admin.BoardAdminService;
 import com.jmt.global.ListData;
 import com.jmt.global.constants.DeleteStatus;
 import com.jmt.global.rests.JSONData;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,6 +21,7 @@ public class BoardAdminController {
 
     private final BoardInfoService boardInfoService;
     private final BoardAdminService boardAdminService;
+    private final JPAQueryFactory queryFactory;
 
 
     @GetMapping // 목록 조회
@@ -48,5 +53,6 @@ public class BoardAdminController {
 
         return new JSONData(item);
     }
+
 
 }

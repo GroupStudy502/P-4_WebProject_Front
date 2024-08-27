@@ -109,6 +109,7 @@ public class AiPromptService {
         Restaurant data;
 
         message = message
+                .replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]", "")
                 .replace("앞", "")
                 .replace("역전", "")
                 .replace("부근", "")
@@ -118,7 +119,12 @@ public class AiPromptService {
                 .replace("알려줘", "")
                 .replace("말해줘", "")
                 .replace("알려주세요", "")
-                .replace("안녕하세요", "")
+                .replace("뭐", "")
+                .replace("점심 ", "")
+                .replace("저녁 ", "")
+                .replace("먹지", "")
+                .replace("먹을지", "")
+                .replace("점심 ", "")
                 .replace("가르쳐", "")
                 .replace("가리켜", "")
                 .replace("맛있는", "")
@@ -222,7 +228,7 @@ public class AiPromptService {
             return data;
         }
         if(sqlFood.get()) { // JPA 쿼리 수행
-            List<Restaurant> items = restaurantRepository.findRestaurants(keyAddr.get(), keyMenu.get());
+            List<Restaurant> items = restaurantRepository.getRestaurants(keyAddr.get(), keyMenu.get());
             int row = (new Random()).nextInt(items.size());
 
             data = items.get(row);

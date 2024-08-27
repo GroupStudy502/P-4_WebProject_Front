@@ -20,7 +20,7 @@ public class BoardSaveServiceTest {
     @BeforeEach
     void init() {
         board = new Board();
-        board.setBid("freetalk");
+        board.setBid("freeBoard1");
         board.setBName("자유게시판");
 /*
          board = Board.builder()
@@ -42,10 +42,10 @@ public class BoardSaveServiceTest {
     void saveTest() {
         RequestBoard form = new RequestBoard();
         form.setBid(board.getBid());
-        form.setCategory("분류1");
-        form.setPoster("작성자");
-        form.setSubject("제목");
-        form.setContent("내용");
+        form.setCategory("분류2");
+        form.setPoster("작성자2");
+        form.setSubject("제목2");
+        form.setContent("내용2");
         form.setGuestPw("1234ab");
 
         BoardData data = saveService.save(form);
