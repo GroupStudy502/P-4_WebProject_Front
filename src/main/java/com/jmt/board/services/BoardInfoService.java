@@ -417,4 +417,16 @@ public class BoardInfoService {
         item.setShowList(showList);
         // 게시글 버튼 노출 권한 처리 E
     }
+
+    public List<BoardData> getAllBoardData() {
+        QBoardData boardData = QBoardData.boardData;
+
+        List<BoardData> items = queryFactory.selectFrom(boardData)
+                .leftJoin(boardData.board)
+                .fetchJoin()
+                .leftJoin(boardData.member)
+                .fetchJoin()
+                .fetch();
+        return items;
+    }
 }
