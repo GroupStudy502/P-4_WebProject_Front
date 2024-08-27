@@ -213,6 +213,7 @@ public class RestaurantInfoService {
                     String[] _oper = oper.split("\\s+");
                     String yoil = _oper[0];
                     String time = _oper[1];
+                    System.out.printf("yoil=%s, time=%s%n", yoil, time);
 
                     if (yoil.equals("평일")) {
                         for (int i = 1; i < 6; i++) {
@@ -235,27 +236,28 @@ public class RestaurantInfoService {
                     LocalTime sTime = LocalTime.parse(_time[0], formatter);
                     LocalTime eTime = LocalTime.parse(_time[1], formatter);
 
-                    Duration du = Duration.between(sTime, eTime);
-                    int hours = (int) du.getSeconds() / (60 * 60);
 
-                    List<LocalTime> _availableTimes = new ArrayList<>();
+                    List<LocalTime> _avaliableTimes = new ArrayList<>();
+                    Duration du = Duration.between(sTime, eTime);
+                    int hours = (int)du.getSeconds() / (60 * 60);
+
                     for (int i = 0; i <= hours; i++) {
                         LocalTime t = sTime.plusHours(i);
-                        // 예약시간 가능 시간에 + 1시간이 종료 시간를 지난 경우는 X
+                        // 예약 가능 시간에 + 1시간이 종료 시간을 지난 경우는 X
                         if (t.plusHours(1L).isAfter(eTime)) {
                             continue;
                         }
-                        _availableTimes.add(t);
+                        _avaliableTimes.add(t);
                     }
 
-                    availableTimes.put(yoil, _availableTimes);
+                    availableTimes.put(yoil, _avaliableTimes);
                     // 예약 가능 시간대 E
                 }
 
                 // 예약 가능 시간대
                 item.setAvailableTimes(availableTimes);
 
-                item.setAvailableWeeks(yoils); // 예약 가능 요일
+                item.setAvailableWeeks(yoils);
 
                 List<LocalDate> availableDates = new ArrayList<>();
                 LocalDate startDate = LocalDate.now().plusDays(1L);
@@ -271,17 +273,13 @@ public class RestaurantInfoService {
                         availableDates.add(date);
                     }
                 }
-
                 item.setAvailableDates(availableDates);
-
-
             } // endif
 
             // 운영 정보로 예약 가능 데이터 처리 E
         } catch (Exception e) {
             System.out.println(operInfo);
         }
-
     }
 
 

@@ -1,8 +1,5 @@
 package com.jmt.restaurant;
 
-import com.jmt.global.ListData;
-import com.jmt.restaurant.controllers.RestaurantSearch;
-import com.jmt.restaurant.entities.Restaurant;
 import com.jmt.restaurant.services.DataTransferService;
 import com.jmt.restaurant.services.RestaurantImageService;
 import com.jmt.restaurant.services.RestaurantInfoService;
