@@ -75,8 +75,8 @@ public class RestaurantInfoService {
         if (StringUtils.hasText(skey) && StringUtils.hasText(skey.trim())) {
             /**
              * sopt
-             * ALL - 통합 검색 - title, tel, address, category
-             * TITLE, TEL, ADDRESS, CATEGOTY
+             * ALL - 통합 검색 (title, tel, address1, address2)
+             * TITLE, TEL, ADDRESS1(도로명), ADDRESS2(지번)
              */
             sopt = sopt.trim();
             skey = skey.trim();
@@ -84,7 +84,7 @@ public class RestaurantInfoService {
             BooleanExpression condition = null;
             if(sopt.equals("ALL")) {
                 // 통합 검색
-                condition = restaurant.rstrNm.concat(restaurant.rstrTelNo).concat(restaurant.rstrRdnmAdr).concat(restaurant.dbsnsStatmBzcndNm).contains(skey);
+                condition = restaurant.rstrNm.concat(restaurant.rstrTelNo).concat(restaurant.rstrRdnmAdr).concat(restaurant.rstrLnnoAdres).contains(skey);
             } else if (sopt.equals("TITLE")) { // 레스토랑 명
                 condition = restaurant.rstrNm.contains(skey);
 
@@ -92,11 +92,11 @@ public class RestaurantInfoService {
                 skey = skey.replaceAll("-", ""); // 숫자만 남긴다
                 condition = restaurant.rstrTelNo.contains(skey);
 
-            } else if (sopt.equals("ADDRESS")) { // 도로명 주소 - rstrRdnmAdr
+            } else if (sopt.equals("ADDRESS1")) { // 도로명 주소 - rstrRdnmAdr
                 condition = restaurant.rstrRdnmAdr.contains(skey);
 
-            } else if (sopt.equals("CATEGORY")) { // 업종명 - dbsnsStatmBzcndNm
-                condition = restaurant.dbsnsStatmBzcndNm.contains(skey);
+            } else if (sopt.equals("ADDRESS2")) { // 지번 주소 - rstrLnnoAdres
+                condition = restaurant.rstrLnnoAdres.contains(skey);
 
             }
 
