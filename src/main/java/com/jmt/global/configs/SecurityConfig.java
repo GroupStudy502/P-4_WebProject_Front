@@ -44,6 +44,8 @@ public class SecurityConfig {
                                     "/upload/**",
                                     "/board/**",
                                     "/ai",
+                                    "/reservation/**",
+                                    "/board_data/**",
                                     "/review/**"
                             ).permitAll() // 회원가입, 로그인(토큰)은 모든 접근 가능
                             .requestMatchers("/board/admin/**").hasAnyAuthority("ADMIN")
