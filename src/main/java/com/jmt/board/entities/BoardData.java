@@ -1,5 +1,7 @@
 package com.jmt.board.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jmt.file.entities.FileInfo;
 import com.jmt.global.entities.BaseEntity;
 import com.jmt.member.entities.Member;
 import jakarta.persistence.*;
@@ -7,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -72,4 +76,35 @@ public class BoardData extends BaseEntity {
 
     @Lob
     private String longText2; // 여러줄 텍스트 추가 필드2
+
+    private int commentCount; // 댓글 수
+
+    @Transient
+    private List<FileInfo> editorImages;
+
+    @Transient
+    private List<FileInfo> attachFiles;
+
+    @Transient
+    private boolean editable; // 수정, 삭제 가능 여부
+
+    @Transient
+    private boolean commentable; // 댓글 작성 가능 여부
+
+    @Transient
+    private boolean showEdit; // 글쓰기,수정 버튼 노출 여부
+
+    @Transient
+    private boolean showDelete; // 글삭제 버튼 노출 여부
+
+    @Transient
+    private boolean showList; // 글목록 버튼 노출 여부
+
+    @Transient
+    private boolean mine; // 게시글 소유자
+
+    @Transient
+    @JsonIgnore
+    private List<CommentData> comments; // 댓글 목록
+
 }

@@ -31,7 +31,7 @@ public class Utils { // 빈의 이름 - utils
 
         Map<String, List<String>> messages = errors.getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(FieldError::getField, e -> getCodeMessages(e.getCodes())));
+                .collect(Collectors.toMap(FieldError::getField, e -> getCodeMessages(e.getCodes()), (p1, p2) -> p1));
 
         // GlobalErrors
         List<String> gMessages = errors.getGlobalErrors()
@@ -91,6 +91,18 @@ public class Utils { // 빈의 이름 - utils
     public String adminUrl(String url) {
         List<ServiceInstance> instances = discoveryClient.getInstances("admin-service");
         return String.format("%s%s", instances.get(0).getUri().toString(), url);
+    }
+
+    /**
+     * 비회원을 구분하는 Unique ID
+     *   IP + User-Agent
+     * @return
+     */
+    public int guestUid() {
+        String ip = request.getRemoteAddr();
+        String ua = request.getHeader("User-Agent");
+
+        return Objects.hash(ip, ua);
     }
 
 }

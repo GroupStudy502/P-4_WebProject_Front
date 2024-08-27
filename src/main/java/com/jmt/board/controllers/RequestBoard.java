@@ -1,10 +1,14 @@
 package com.jmt.board.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jmt.file.entities.FileInfo;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class RequestBoard {
     private Long seq; // 글 번호 - 글 수정시 필요
@@ -39,5 +43,8 @@ public class RequestBoard {
 
     private String longText1;
     private String longText2;
+
+    private List<FileInfo> editorImages;
+    private List<FileInfo> attachFiles;
 
 }
