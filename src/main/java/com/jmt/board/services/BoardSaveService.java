@@ -25,6 +25,7 @@ public class BoardSaveService {
     private final MemberUtil memberUtil;
     private final FileUploadDoneService doneService;
     private final BoardConfigInfoService configInfoService;
+    private final BoardInfoService infoService;
 
     public BoardData save(RequestBoard form) {
 
@@ -85,6 +86,7 @@ public class BoardSaveService {
         // 파일 업로드 완료 처리
         doneService.process(gid);
 
-        return data;
+        return infoService.get(data.getSeq()); // 검색
     }
+//커밋
 }
