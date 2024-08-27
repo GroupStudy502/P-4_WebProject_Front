@@ -71,7 +71,7 @@ public class DataTransfer {
             if (items == null || items.isEmpty()) continue;
 
             items.forEach(item -> imageService.update(item.getRstrId()));
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         }
     }
 }
