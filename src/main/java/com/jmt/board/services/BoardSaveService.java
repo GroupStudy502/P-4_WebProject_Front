@@ -88,5 +88,5 @@ public class BoardSaveService {
 
         return infoService.get(data.getSeq()); // 검색
     }
-
+//커밋
 }
