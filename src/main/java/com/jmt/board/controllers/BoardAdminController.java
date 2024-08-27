@@ -1,7 +1,6 @@
 package com.jmt.board.controllers;
 
 import com.jmt.board.entities.BoardData;
-import com.jmt.board.entities.QBoardData;
 import com.jmt.board.services.BoardInfoService;
 import com.jmt.board.services.admin.BoardAdminService;
 import com.jmt.global.ListData;
@@ -11,8 +10,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
