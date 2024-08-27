@@ -4,12 +4,10 @@ import com.jmt.member.constants.Authority;
 import com.jmt.member.entities.Authorities;
 import com.jmt.member.entities.Member;
 import com.jmt.member.repositories.MemberRepository;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
