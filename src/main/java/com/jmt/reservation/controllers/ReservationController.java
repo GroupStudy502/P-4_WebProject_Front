@@ -8,13 +8,11 @@ import com.jmt.reservation.entities.Reservation;
 import com.jmt.reservation.services.ReservationPayService;
 import com.jmt.reservation.services.ReservationSaveService;
 import com.jmt.reservation.validators.ReservationValidator;
+import com.jmt.restaurant.controllers.RestaurantSearch;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/reservation")
@@ -45,5 +43,26 @@ public class ReservationController {
 
     public void payProcess() {
         
+    }
+
+    /**
+     * 예약 목록 조회
+     * @return
+     */
+    @GetMapping("/list")
+    public JSONData list(@RequestBody RestaurantSearch search) {
+
+        return null;
+    }
+
+    /**
+     * 예약 상세 조회
+     * @param rName
+     * @return
+     */
+    @GetMapping("/info/{rName}")
+    public JSONData info(@PathVariable("rName") String rName) {
+
+        return null;
     }
 }
