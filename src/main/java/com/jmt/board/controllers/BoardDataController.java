@@ -2,6 +2,8 @@ package com.jmt.board.controllers;
 
 import com.jmt.board.entities.BoardData;
 import com.jmt.board.services.BoardInfoService;
+import com.jmt.global.ListData;
+import com.jmt.global.constants.DeleteStatus;
 import com.jmt.global.rests.JSONData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +26,12 @@ public class BoardDataController {
         List<BoardData> items = boardInfoService.getAllBoardData();
         System.out.println(items);
         return new JSONData(items);
+    }
+
+    @GetMapping
+    public JSONData getList(BoardDataSearch search) {
+        ListData<BoardData> data = boardInfoService.getList(search, DeleteStatus.ALL);
+
+        return new JSONData(data);
     }
 }

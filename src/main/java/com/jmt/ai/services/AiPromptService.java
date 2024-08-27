@@ -109,12 +109,16 @@ public class AiPromptService {
         Restaurant data;
 
         message = message
-                .replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]", "")
+                .replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\\s]", "")
                 .replace("앞", "")
                 .replace("역전", "")
-                .replace("부근", "")
                 .replace("가게", "")
                 .replace("맛집", "")
+                .replace("내 근처", "신촌")
+                .replace("이 근처", "신촌")
+                .replace("내 주변", "신촌")
+                .replace("여기", "신촌")
+                .replace("부근", "")
                 .replace("근처", "")
                 .replace("알려줘", "")
                 .replace("말해줘", "")
