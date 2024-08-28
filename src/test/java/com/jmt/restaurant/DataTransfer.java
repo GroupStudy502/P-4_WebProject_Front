@@ -26,6 +26,7 @@ public class DataTransfer {
     @Autowired
     private RestaurantInfoService infoService;
 
+
     @Test
     @DisplayName("식당 기본 정보")
     void update1() {
