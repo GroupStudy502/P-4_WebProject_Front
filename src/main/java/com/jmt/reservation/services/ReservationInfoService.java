@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationInfoService {
@@ -79,8 +81,9 @@ public class ReservationInfoService {
 
         Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
 
-        //return new ListData<>(,pagination);
-        return new ListData<>();
+        List<Reservation> items = reservationRepository.findAll();
+
+        return new ListData<>(items,pagination);
     }
 
     public Reservation get(Long orderNo) {
