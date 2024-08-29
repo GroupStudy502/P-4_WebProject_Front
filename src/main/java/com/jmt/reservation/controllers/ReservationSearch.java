@@ -13,5 +13,4 @@ public class ReservationSearch extends CommonSearch {
 
     private String rName;
 
-
 }
