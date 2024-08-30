@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DataTransfer {
 
     @Test
     @DisplayName("식당 이미지 정보")
-     void update2() {
+    void update2() {
         for (int i = 1; i <= 10; i++) {
             service.update2(i);
         }
@@ -57,14 +58,14 @@ public class DataTransfer {
     @DisplayName("메뉴 이미지 정보")
     void update4() {
         service.update4(1);
-        //service.update4(2);
+        service.update4(2);
     }
 
+    /*
     @Test
     @DisplayName("이미지가 없는 식당 이미지 업데이트")
     void update5() throws Exception {
-        /*
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 10; i++) {
             RestaurantSearch search = new RestaurantSearch();
             search.setPage(i);
             search.setLimit(5000);
@@ -72,10 +73,8 @@ public class DataTransfer {
             List<Restaurant> items = data.getItems();
             if (items == null || items.isEmpty()) continue;
 
-            //items.forEach(item -> imageService.update(item.getRstrId()));
-            Thread.sleep(5000);
+            items.forEach(item -> imageService.update(item.getRstrId()));
+            Thread.sleep(3000);
         }
-
-         */
     }
 }
