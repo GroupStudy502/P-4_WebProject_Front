@@ -169,7 +169,8 @@ public class BoardInfoService {
         if (orderSpecifier != null) {
             orderSpecifiers.add(orderSpecifier);
         }
-        orderSpecifiers.add(boardData.createdAt.desc());
+        orderSpecifiers.add(boardData.seq.desc());
+        //orderSpecifiers.add(boardData.createdAt.desc());
         /* 정렬 처리 E */
 
         /* 목록 조회 처리 S */
