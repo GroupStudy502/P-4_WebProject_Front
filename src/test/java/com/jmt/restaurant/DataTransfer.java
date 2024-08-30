@@ -60,6 +60,7 @@ public class DataTransfer {
         //service.update4(2);
     }
 
+    /*
     @Test
     @DisplayName("이미지가 없는 식당 이미지 업데이트")
     void update5() throws Exception {
@@ -75,4 +76,5 @@ public class DataTransfer {
             Thread.sleep(3000);
         }
     }
+     */
 }

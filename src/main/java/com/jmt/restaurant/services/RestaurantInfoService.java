@@ -6,6 +6,7 @@ import com.jmt.global.Pagination;
 import com.jmt.restaurant.controllers.RestaurantSearch;
 import com.jmt.restaurant.entities.QRestaurant;
 import com.jmt.restaurant.entities.Restaurant;
+import com.jmt.restaurant.entities.RestaurantImage;
 import com.jmt.restaurant.exceptions.RestaurantNotFoundException;
 import com.jmt.restaurant.repositories.RestaurantRepository;
 import com.jmt.wishlist.constants.WishType;
@@ -38,7 +39,7 @@ public class RestaurantInfoService {
     private final RestaurantRepository repository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
     private final WishListService wishListService;
-
+    private final RestaurantImageService imageService;
     /**
      * 목록 조회
      * @param search
@@ -75,8 +76,8 @@ public class RestaurantInfoService {
         if (StringUtils.hasText(skey) && StringUtils.hasText(skey.trim())) {
             /**
              * sopt
-             * ALL - 통합 검색 (title, tel, address1, address2)
-             * TITLE, TEL, ADDRESS1(도로명), ADDRESS2(지번)
+             * ALL - 통합 검색 - title, tel, address, category
+             * TITLE, TEL, ADDRESS, CATEGOTY
              */
             sopt = sopt.trim();
             skey = skey.trim();
@@ -84,7 +85,7 @@ public class RestaurantInfoService {
             BooleanExpression condition = null;
             if(sopt.equals("ALL")) {
                 // 통합 검색
-                condition = restaurant.rstrNm.concat(restaurant.rstrTelNo).concat(restaurant.rstrRdnmAdr).concat(restaurant.rstrLnnoAdres).contains(skey);
+                condition = restaurant.rstrNm.concat(restaurant.rstrTelNo).concat(restaurant.rstrRdnmAdr).concat(restaurant.dbsnsStatmBzcndNm).contains(skey);
             } else if (sopt.equals("TITLE")) { // 레스토랑 명
                 condition = restaurant.rstrNm.contains(skey);
 
@@ -92,11 +93,11 @@ public class RestaurantInfoService {
                 skey = skey.replaceAll("-", ""); // 숫자만 남긴다
                 condition = restaurant.rstrTelNo.contains(skey);
 
-            } else if (sopt.equals("ADDRESS1")) { // 도로명 주소 - rstrRdnmAdr
+            } else if (sopt.equals("ADDRESS")) { // 도로명 주소 - rstrRdnmAdr
                 condition = restaurant.rstrRdnmAdr.contains(skey);
 
-            } else if (sopt.equals("ADDRESS2")) { // 지번 주소 - rstrLnnoAdres
-                condition = restaurant.rstrLnnoAdres.contains(skey);
+            } else if (sopt.equals("CATEGORY")) { // 업종명 - dbsnsStatmBzcndNm
+                condition = restaurant.dbsnsStatmBzcndNm.contains(skey);
 
             }
 
@@ -152,7 +153,7 @@ public class RestaurantInfoService {
      *     찜하기 목록
      *
      *      @return
-      */
+     */
     public ListData<Restaurant> getWishList(CommonSearch search) {
         int page = Math.max(search.getPage(), 1);
         int limit = search.getLimit();
@@ -280,5 +281,13 @@ public class RestaurantInfoService {
         } catch (Exception e) {
             System.out.println(operInfo);
         }
+
+        // 이미지가 없는 식당 이미지 업데이트 S
+        List<RestaurantImage> images = item.getImages();
+        if (images == null || images.isEmpty()) {
+            List<RestaurantImage> _images = imageService.update(item.getRstrId(), item);
+            item.setImages(_images);
+        }
+        // 이미지가 없는 식당 이미지 업데이트 E
     }
 }
