@@ -1,5 +1,6 @@
 package com.jmt.member.services;
 
+import com.jmt.global.rests.JSONData;
 import com.jmt.member.constants.Authority;
 import com.jmt.member.controllers.RequestAuthority;
 import com.jmt.member.entities.Authorities;
@@ -32,61 +33,48 @@ public class MemberAdminService {
         return null;
     }
 
-    public RequestAuthority setAuthority(RequestAuthority form) {
+    public JSONData setAuthority(RequestAuthority form) {
         String authorityName = form.getAuthorityName();
         Long memberSeq = form.getMemberSeq();
         boolean invoke = form.isInvoke();
-        System.out.println("==========setAuthority===========");
 
         Member member = memberRepository.findById(memberSeq).orElse(null);
         if (member != null) {
             List<Authorities> authorities = authoritiesRepository.findByMember(member);
-            System.out.println("authorities : " + authorities);
             Set<Authority> _items = authorities.stream().map(Authorities::getAuthority).collect(Collectors.toSet());
-            System.out.println("_items : " + _items);
 
+            //기존 권한 읽어 _items 에 보관 후 _items 에 변경 반영하기
             if(!invoke && _items.contains(Authority.valueOf(authorityName))) { // 권한 삭제
                 _items.remove(Authority.valueOf(authorityName));
             }else if(invoke && !_items.contains(Authority.valueOf(authorityName))) { // 권한 부여
                 _items.add(Authority.valueOf(authorityName));
             }
 
-            List<Authorities> items = _items.stream().map(a -> Authorities.builder().member(member).authority(a).build())
-                    .toList();
-
-            List<Authorities> newAuthorities = authoritiesRepository.saveAllAndFlush(items);
-            System.out.println("newAuthorities : " + newAuthorities);
-
-            RequestAuthority newAuthority = RequestAuthority.builder().memberSeq(member.getSeq())
-                            .authorityName(authorityName).invoke(invoke).build();
-
-            System.out.println("newAuthority : " + newAuthority);
-
-/*
+            //해당 member의 이전 권한 모두 삭제
             List<Authorities> items = authoritiesRepository.findByMember(member);
             authoritiesRepository.deleteAll(items);
             authoritiesRepository.flush();
 
-            items = authorities.stream().map(a -> Authorities.builder()
-                    .member(member)
-                    .authority(a)
-                    .build()).toList();
-
-            authoritiesRepository.saveAllAndFlush(items);
-*/
-            //Set<Authority> items = authorities.stream().map(Authorities::getAuthority).collect(Collectors.toSet());
-            //authoritiesRepository.
-            /*
-            Set<Authority> items = authorities.stream().map(Authorities::getAuthority).collect(Collectors.toSet());
-            items.add(Authority.valueOf(authorityName));
-            List<Authorities> _items = items.stream().map(a -> Authorities.builder().member(member).authority(a).build())
-                    .toList();
-             */
+            //_items 으로 부터 새로운 권한 리스트 만들기
+            List<Authorities> itemsNew = _items.stream().map(a ->
+                            Authorities.builder()
+                            .member(member)
+                            .authority(a).build()
+            ).toList();
 
 
-
+            List<Authorities> newAuthorities = authoritiesRepository.saveAllAndFlush(itemsNew);
+            System.out.println("newAuthorities : " + newAuthorities);
+            JSONData data = new JSONData(newAuthorities);
+            data.setMessage("처리되었습니다.");
+            data.setSuccess(true);
+            return data;
         }
-        return form;
+        JSONData data = new JSONData();
+
+        data.setMessage("권한 변경 실패");
+        data.setSuccess(false);
+        return data;
     }
 
 

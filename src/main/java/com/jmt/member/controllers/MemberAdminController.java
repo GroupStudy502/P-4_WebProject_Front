@@ -18,10 +18,7 @@ public class MemberAdminController {
         return new JSONData(member);
     }
     @PostMapping("/authorities/save")
-    public JSONData save(@RequestParam("requestAuthority") RequestAuthority form) {
-        System.out.println("=========" + form);
-        //service.setAuthority(form);
-
-        return new JSONData(form);
+    public JSONData save(@RequestBody RequestAuthority form) {
+        return service.setAuthority(form);
     }
 }

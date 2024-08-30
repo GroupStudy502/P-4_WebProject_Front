@@ -74,20 +74,20 @@ public class ReservationAdminService {
             andBuilder.and(orBuilder);
         }
 
-        //String sort = search.getSort();
+        String sort = search.getSort();
 
         PathBuilder<Reservation> pathBuilder = new PathBuilder<>(Reservation.class, "reservation");
         OrderSpecifier orderSpecifier = null;
         Order order = Order.DESC;
-//        if (sort != null && StringUtils.hasText(sort.trim())) {
-//            // 정렬항목_방향   예) viewCount_DESC -> 조회수가 많은 순으로 정렬
-//            String[] _sort = sort.split("_");
-//            if (_sort[1].toUpperCase().equals("ASC")) {
-//                order = Order.ASC;
-//            }
-//
-//            orderSpecifier = new OrderSpecifier(order, pathBuilder.get(_sort[0]));
-//        }
+        if (sort != null && StringUtils.hasText(sort.trim())) {
+            // 정렬항목_방향   예) viewCount_DESC -> 조회수가 많은 순으로 정렬
+            String[] _sort = sort.split("_");
+            if (_sort[1].toUpperCase().equals("ASC")) {
+                order = Order.ASC;
+            }
+
+            orderSpecifier = new OrderSpecifier(order, pathBuilder.get(_sort[0]));
+        }
 
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
         if (orderSpecifier != null) {
