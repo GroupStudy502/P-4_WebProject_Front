@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/mypage")
-public class MypageController {
+
+public class MypageController { // 마이페이지
 
     private final MemberSaveService memberSaveService;
     private final ProfileUpdateValidator profileUpdateValidator;
