@@ -6,6 +6,7 @@ import com.jmt.global.Pagination;
 import com.jmt.restaurant.controllers.RestaurantSearch;
 import com.jmt.restaurant.entities.QRestaurant;
 import com.jmt.restaurant.entities.Restaurant;
+import com.jmt.restaurant.entities.RestaurantImage;
 import com.jmt.restaurant.exceptions.RestaurantNotFoundException;
 import com.jmt.restaurant.repositories.RestaurantRepository;
 import com.jmt.wishlist.constants.WishType;
@@ -38,7 +39,7 @@ public class RestaurantInfoService {
     private final RestaurantRepository repository; // 카운트 할 때 필요
     private final JPAQueryFactory queryFactory;
     private final WishListService wishListService;
-
+    private final RestaurantImageService imageService;
     /**
      * 목록 조회
      * @param search
@@ -152,7 +153,7 @@ public class RestaurantInfoService {
      *     찜하기 목록
      *
      *      @return
-      */
+     */
     public ListData<Restaurant> getWishList(CommonSearch search) {
         int page = Math.max(search.getPage(), 1);
         int limit = search.getLimit();
@@ -280,5 +281,13 @@ public class RestaurantInfoService {
         } catch (Exception e) {
             System.out.println(operInfo);
         }
+
+        // 이미지가 없는 식당 이미지 업데이트 S
+        List<RestaurantImage> images = item.getImages();
+        if (images == null || images.isEmpty()) {
+            List<RestaurantImage> _images = imageService.update(item.getRstrId(), item);
+            item.setImages(_images);
+        }
+        // 이미지가 없는 식당 이미지 업데이트 E
     }
 }
