@@ -6,6 +6,7 @@ import com.jmt.global.exceptions.BadRequestException;
 import com.jmt.global.rests.JSONData;
 import com.jmt.payment.services.PaymentConfig;
 import com.jmt.reservation.entities.Reservation;
+import com.jmt.reservation.services.ReservationDeleteService;
 import com.jmt.reservation.services.ReservationInfoService;
 import com.jmt.reservation.services.ReservationPayService;
 import com.jmt.reservation.services.ReservationSaveService;
@@ -25,6 +26,7 @@ public class ReservationController {
     private final ReservationPayService payService;
     private final Utils utils;
     private final ReservationInfoService infoService;
+    private final ReservationDeleteService deleteService;
 
     @PostMapping("/apply")
     public JSONData apply(@Valid @RequestBody RequestReservation form, Errors errors) {
@@ -70,4 +72,12 @@ public class ReservationController {
         Reservation item = infoService.get(orderNo);
         return new JSONData(item);
     }
+
+    @DeleteMapping("/delete/{orderNo}")
+    public JSONData delete(@PathVariable("orderNo") Long orderNo) {
+        Reservation item = deleteService.delete(orderNo);
+
+        return new JSONData(item);
+    }
+
 }
