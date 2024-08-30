@@ -38,14 +38,14 @@ public class CommentController {
     public JSONData save(RequestComment form, Errors errors) {
         validator.validate(form, errors);
 
-        if (errors.hasErrors()) { // 에러가 있으면 에러메세지
+        if (errors.hasErrors()) {
             throw new BadRequestException(utils.getErrorMessages(errors));
         }
 
         saveService.save(form);
 
         List<CommentData> items = infoService.getList(form.getBoardDataSeq());
-// 게시글 번호 가져와서 댓글 등록
+        // 게시글 번호 가져와서 댓글 등록
         return new JSONData(items);
     }
 
