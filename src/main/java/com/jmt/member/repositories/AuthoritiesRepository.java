@@ -11,4 +11,12 @@ import java.util.List;
 public interface AuthoritiesRepository extends JpaRepository<Authorities, AuthoritiesId>, QuerydslPredicateExecutor<Authorities> {
 
     List<Authorities> findByMember(Member member);
+
+    //@Query("delete from Authorities a where a.member = :k1")
+    //Long delAllByMember(@Param("k1") Member k1);
+
+    //@Query("delete from Authorities a where a.member = :k1")
+    //Long deleteByMember(@Param("k1") Member k1);
+    Long removeByMember(Member member);
+
 }
