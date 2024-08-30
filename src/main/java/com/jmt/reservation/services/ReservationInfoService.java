@@ -12,10 +12,14 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
+import static org.springframework.data.domain.Sort.Order.desc;
 
 @Service
 @RequiredArgsConstructor
@@ -76,14 +80,14 @@ public class ReservationInfoService {
         }
         /* 검색 처리 E */
 
-        // 페이징 데이터
-        long total = reservationRepository.count(andBuilder); // 조회된 전체 갯수
 
-        Pagination pagination = new Pagination(page, (int)total, 10, limit, request);
 
-        List<Reservation> items = reservationRepository.findAll();
 
-        return new ListData<>(items,pagination);
+
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by(desc("createdAt")));
+        Page<Reservation> data = reservationRepository.findAll(andBuilder, pageable);
+        Pagination pagination = new Pagination(page, (int) data.getTotalElements(), 10, limit, request);
+        return new ListData<>(data.getContent(),pagination);
     }
 
     public Reservation get(Long orderNo) {
