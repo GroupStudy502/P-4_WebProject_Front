@@ -63,7 +63,7 @@ public class DataTransfer {
     @Test
     @DisplayName("이미지가 없는 식당 이미지 업데이트")
     void update5() throws Exception {
-        for (int i = 1; i <=10; i++) {
+        for (int i = 1; i <= 5; i++) {
             RestaurantSearch search = new RestaurantSearch();
             search.setPage(i);
             search.setLimit(5000);
