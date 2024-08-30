@@ -21,6 +21,7 @@ public class MemberAdminController {
     public JSONData save(@RequestParam("requestAuthority") RequestAuthority form) {
         System.out.println("=========" + form);
         //service.setAuthority(form);
+
         return new JSONData(form);
     }
 }
