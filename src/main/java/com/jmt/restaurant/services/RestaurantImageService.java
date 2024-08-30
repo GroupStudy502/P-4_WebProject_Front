@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class RestaurantImageService {
     private final RestTemplate restTemplate;
-    private final RestaurantInfoService infoService;
     private final RestaurantImageRepository imageRepository;
 
     public String collect(Long rstrId, Restaurant restaurant ) {
