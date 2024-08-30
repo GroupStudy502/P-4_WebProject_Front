@@ -16,7 +16,7 @@ import java.util.List;
 public class WishListController {
 
     private final WishListService service;
-
+    // 위시리스트 조회
     @GetMapping("/{type}")
     public JSONData list(@PathVariable("type") String type) {
         List<Long> seqs = service.getList(WishType.valueOf(type));
