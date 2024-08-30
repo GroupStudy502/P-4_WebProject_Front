@@ -1,11 +1,14 @@
 package com.jmt.member.services;
 
+import com.jmt.member.MemberUtil;
 import com.jmt.member.constants.Authority;
 import com.jmt.member.controllers.RequestJoin;
 import com.jmt.member.entities.Authorities;
 import com.jmt.member.entities.Member;
+import com.jmt.member.exceptions.MemberNotFoundException;
 import com.jmt.member.repositories.AuthoritiesRepository;
 import com.jmt.member.repositories.MemberRepository;
+import com.jmt.mypage.controllers.RequestProfile;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +26,8 @@ public class MemberSaveService {
     private final MemberRepository memberRepository;
     private final AuthoritiesRepository authoritiesRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberUtil memberUtil;
+
 
     /**
      * 회원 가입 처리
@@ -35,6 +40,29 @@ public class MemberSaveService {
         member.setPassword(hash);
 
         save(member, List.of(Authority.USER));
+    }
+
+    /**
+     *  회원정보 수정
+     */
+
+    public void save(RequestProfile form) {
+        Member member = memberUtil.getMember();
+        String email = member.getEmail();
+        member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+        String password = form.getPassword();
+        String mobile = form.getMobile();
+        if (StringUtils.hasText(mobile)) {
+            mobile = mobile.replaceAll("\\D", "");
+        }
+        member.setUserName(form.getUserName());
+        member.setMobile(form.getMobile());
+
+        if (StringUtils.hasText(password)) {
+            String hash = passwordEncoder.encode(password);
+            member.setPassword(hash);
+        }
+        save(member, null);
     }
 
 
