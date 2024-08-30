@@ -1,6 +1,7 @@
 package com.jmt.board.controllers;
 
 import com.jmt.board.entities.BoardData;
+import com.jmt.board.services.BoardDeleteService;
 import com.jmt.board.services.BoardInfoService;
 import com.jmt.board.services.admin.BoardAdminService;
 import com.jmt.global.ListData;
@@ -18,6 +19,7 @@ public class BoardAdminController {
 
     private final BoardInfoService boardInfoService;
     private final BoardAdminService boardAdminService;
+    private final BoardDeleteService deleteService;
     private final JPAQueryFactory queryFactory;
 
 
@@ -51,5 +53,17 @@ public class BoardAdminController {
         return new JSONData(item);
     }
 
+    @DeleteMapping("/delete/{seq}")
+    public JSONData delete(@PathVariable("seq") Long seq) {
+        BoardData item = deleteService.delete(seq);
+
+        return new JSONData(item);
+    }
+    @DeleteMapping("/complete/{seq}")
+    public JSONData complete(@PathVariable("seq") Long seq) {
+        BoardData item = deleteService.complete(seq);
+
+        return new JSONData(item);
+    }
 
 }

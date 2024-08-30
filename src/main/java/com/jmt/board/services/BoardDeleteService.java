@@ -24,9 +24,9 @@ public class BoardDeleteService {
      * @return
      */
     public BoardData delete(Long seq) {
+
         BoardData data = infoService.get(seq);
         data.setDeletedAt(LocalDateTime.now());
-
         repository.saveAndFlush(data);
 
         return data;
