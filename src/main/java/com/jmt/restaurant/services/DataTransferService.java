@@ -63,14 +63,23 @@ public class DataTransferService {
 
         List<Map<String, String>> tmp = result.getBody();
 
+        // 식당 운영 정보
         String url2 = String.format("%s/rstr/oprt?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
         ResponseEntity<ApiResult> result2 = restTemplate.getForEntity(URI.create(url2), ApiResult.class);
 
         List<Map<String, String>> tmp2 = result2.getBody().getBody();
 
+        // 식당 품질 정보
+        String url3 = String.format("%s/rstr/qlt?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+        ResponseEntity<ApiResult> result3 = restTemplate.getForEntity(URI.create(url3), ApiResult.class);
+
+        List<Map<String, String>> tmp3 = result3.getBody().getBody();
+
         List<Restaurant> items = tmp.stream()
                 .map(d -> {
                     Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"), "RSTR");
+
+                    Map<String, String> extra2 = getExtra(tmp3, d.get("RSTR_ID"), "RSTR");
 
                     Restaurant rest =  Restaurant.builder()
                             .rstrId(Long.valueOf(d.get("RSTR_ID")))
@@ -85,32 +94,41 @@ public class DataTransferService {
                             .rstrIntrcnCont(d.get("RSTR_INTRCN_CONT"))
                             .build();
 
-                    if (extra == null) {
-                        return rest;
+                    /* 식당 운영 정보 S */
+                    if (extra != null) {
+
+                        rest.setAreaNm(extra.get("AREA_NM"));
+
+                        if (extra.get("PRDL_SEAT_CNT") != null)
+                            rest.setPrdlSeatCnt(Integer.valueOf(extra.get("PRDL_SEAT_CNT")));
+                        if (extra.get("SEAT_CNT") != null) rest.setSeatCnt(Integer.valueOf(extra.get("SEAT_CNT")));
+                        rest.setPrkgPosYn(extra.get("PRKG_POS_YN").equals("Y"));
+                        rest.setWifiOfrYn(extra.get("WIFI_OFR_YN").equals("Y"));
+                        rest.setDcrnYn(extra.get("DCRN_YN").equals("Y"));
+                        rest.setPetEntrnPosblYn(extra.get("PET_ENTRN_POSBL_YN").equals("Y"));
+                        rest.setFgggMenuOfrYn(extra.get("FGGG_MENU_OFR_YN").equals("Y"));
+                        rest.setTlromInfoCn(extra.get("TLROM_INFO_CN"));
+                        rest.setRestdyInfoCn(extra.get("RESTDY_INFO_CN"));
+                        rest.setBsnsTmCn(extra.get("BSNS_TM_CN"));
+                        rest.setHmdlvSaleYn(extra.get("HMDLV_SALE_YN").equals("Y"));
+                        rest.setDsbrCvntlYn(extra.get("DSBR_CVNTL_YN").equals("Y"));
+                        rest.setDelvSrvicYn(extra.get("DELV_SRVIC_YN").equals("Y"));
+                        rest.setRsrvMthdNm(extra.get("RSRV_MTHD_NM"));
+                        rest.setOnlineRsrvInfoCn(extra.get("ONLINE_RSRV_INFO_CN"));
+                        rest.setHmpgUrl(extra.get("HMPG_URL"));
+                        rest.setKioskYn(extra.get("KIOSK_YN").equals("Y"));
+                        rest.setMbPmamtYn(extra.get("MB_PMAMT_YN").equals("Y"));
+                        rest.setSmorderYn(extra.get("SMORDER_YN").equals("Y"));
+                        rest.setReprsntMenuNm(extra.get("REPRSNT_MENU_NM"));
                     }
+                    /* 식당 운영 정보 E */
 
-                    rest.setAreaNm(extra.get("AREA_NM"));
-
-                    if (extra.get("PRDL_SEAT_CNT") != null) rest.setPrdlSeatCnt(Integer.valueOf(extra.get("PRDL_SEAT_CNT")));
-                    if (extra.get("SEAT_CNT") != null) rest.setSeatCnt(Integer.valueOf(extra.get("SEAT_CNT")));
-                    rest.setPrkgPosYn(extra.get("PRKG_POS_YN").equals("Y"));
-                    rest.setWifiOfrYn(extra.get("WIFI_OFR_YN").equals("Y"));
-                    rest.setDcrnYn(extra.get("DCRN_YN").equals("Y"));
-                    rest.setPetEntrnPosblYn(extra.get("PET_ENTRN_POSBL_YN").equals("Y"));
-                    rest.setFgggMenuOfrYn(extra.get("FGGG_MENU_OFR_YN").equals("Y"));
-                    rest.setTlromInfoCn(extra.get("TLROM_INFO_CN"));
-                    rest.setRestdyInfoCn(extra.get("RESTDY_INFO_CN"));
-                    rest.setBsnsTmCn(extra.get("BSNS_TM_CN"));
-                    rest.setHmdlvSaleYn(extra.get("HMDLV_SALE_YN").equals("Y"));
-                    rest.setDsbrCvntlYn(extra.get("DSBR_CVNTL_YN").equals("Y"));
-                    rest.setDelvSrvicYn(extra.get("DELV_SRVIC_YN").equals("Y"));
-                    rest.setRsrvMthdNm(extra.get("RSRV_MTHD_NM"));
-                    rest.setOnlineRsrvInfoCn(extra.get("ONLINE_RSRV_INFO_CN"));
-                    rest.setHmpgUrl(extra.get("HMPG_URL"));
-                    rest.setKioskYn(extra.get("KIOSK_YN").equals("Y"));
-                    rest.setMbPmamtYn(extra.get("MB_PMAMT_YN").equals("Y"));
-                    rest.setSmorderYn(extra.get("SMORDER_YN").equals("Y"));
-                    rest.setReprsntMenuNm(extra.get("REPRSNT_MENU_NM"));
+                    /* 식당 품질 정보 S */
+                    if (extra2 != null) {
+                        rest.setAwardInfoDscrn(extra2.get("AWARD_INFO_DSCRN"));
+                        rest.setNaverGrad(extra2.get("NAVER_GRAD") == null ? null : Double.valueOf(extra2.get("NAVER_GRAD")));
+                    }
+                    /* 식당 품질 정보 E */
 
                     return rest;
                 }).toList();

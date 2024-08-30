@@ -33,7 +33,7 @@ public class Member extends BaseEntity {
     private String mobile;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Authorities> authorities;
 
     @Transient

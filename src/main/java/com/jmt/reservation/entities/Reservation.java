@@ -1,6 +1,6 @@
 package com.jmt.reservation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jmt.global.entities.BaseEntity;
 import com.jmt.member.entities.Member;
 import com.jmt.payment.constants.PayMethod;
@@ -26,12 +26,10 @@ public class Reservation extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status = ReservationStatus.START;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="rstrId")
     private Restaurant restaurant;
 
@@ -53,6 +51,7 @@ public class Reservation extends BaseEntity {
     @Column(length = 150)
     private String rTel; // 식당 연락처
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rDateTime; // 예약 일시
 
     private int price; // 1명당 예약금
