@@ -55,7 +55,7 @@ public class Reservation extends BaseEntity {
     private String rTel; // 식당 연락처
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime rDateTime; // 예약 일시 
+    private LocalDateTime rDateTime; // 예약 일시
 
     private int price; // 1명당 예약금
     private int persons; // 예약 인원수
