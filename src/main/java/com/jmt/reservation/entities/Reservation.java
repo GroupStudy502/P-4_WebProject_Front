@@ -1,5 +1,6 @@
 package com.jmt.reservation.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jmt.global.entities.BaseEntity;
 import com.jmt.member.entities.Member;
@@ -53,6 +54,7 @@ public class Reservation extends BaseEntity {
     @Column(length = 150)
     private String rTel; // 식당 연락처
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rDateTime; // 예약 일시
 
     private int price; // 1명당 예약금

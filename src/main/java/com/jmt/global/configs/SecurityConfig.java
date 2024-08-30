@@ -45,6 +45,7 @@ public class SecurityConfig {
                                     "/board/**",
                                     "/ai",
                                     "/reservation/**",
+                                    "/member/authorities/**",
                                     "/board_data/**",
                                     "/review/**",
                                     "/comment/**"

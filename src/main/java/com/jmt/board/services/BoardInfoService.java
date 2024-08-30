@@ -169,7 +169,8 @@ public class BoardInfoService {
         if (orderSpecifier != null) {
             orderSpecifiers.add(orderSpecifier);
         }
-        orderSpecifiers.add(boardData.createdAt.desc());
+        orderSpecifiers.add(boardData.seq.desc());
+        //orderSpecifiers.add(boardData.createdAt.desc());
         /* 정렬 처리 E */
 
         /* 목록 조회 처리 S */
@@ -360,7 +361,7 @@ public class BoardInfoService {
 
         // 회원 - 직접 작성한 게시글인 경우만 수정,삭제(editable)
         Member boardMember = item.getMember(); // 게시글을 작성한 회원
-        Member loggedMember = item.getMember(); // 로그인한 회원
+        Member loggedMember = memberUtil.getMember(); // 로그인한 회원
         if (boardMember != null && memberUtil.isLogin() && boardMember.getEmail().equals(loggedMember.getEmail())) {
             editable = true; // 수정, 삭제 가능
             mine = true; // 게시글 소유자
