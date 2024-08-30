@@ -1,6 +1,5 @@
 package com.jmt.reservation.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jmt.global.entities.BaseEntity;
 import com.jmt.member.entities.Member;
