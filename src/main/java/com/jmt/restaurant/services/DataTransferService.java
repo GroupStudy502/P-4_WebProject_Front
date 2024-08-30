@@ -33,7 +33,7 @@ public class DataTransferService {
     private final RestTemplate restTemplate;
     private final ConfigInfoService infoService;
 
-    private String serviceKey = "8Mu7gNxO98975QV25VMKBnsDC82WaomG1raYEiOXoi3kOTGsi89KCUJBxZI0HNz6";
+    private String serviceKey = "T2eCOptdknlAVKakKH6Y7DWFweda6uRh6jOSaUXsdU8WnvLoNfTFJSo0lVJk37g1";
     private static final String apiBaseUrl = "https://seoul.openapi.redtable.global/api";
 
     // 방법1
@@ -68,16 +68,22 @@ public class DataTransferService {
 
         List<Map<String, String>> tmp2 = result2.getBody().getBody();
 
+        String url3 = String.format("%s/rstr/qlt?serviceKey=%s&pageNo=%d", apiBaseUrl, serviceKey(), pageNo);
+        ResponseEntity<ApiResult> result3 = restTemplate.getForEntity(URI.create(url3), ApiResult.class);
+        List<Map<String, String>> tmp3 = result3.getBody().getBody();
+
         List<Restaurant> items = tmp.stream()
                 .map(d -> {
                     Map<String, String> extra = getExtra(tmp2, d.get("RSTR_ID"), "RSTR");
 
-                    Restaurant rest =  Restaurant.builder()
+                    Map<String, String> extra2 = getExtra(tmp3, d.get("RSTR_ID"), "RSTR");
+
+                    Restaurant rest = Restaurant.builder()
                             .rstrId(Long.valueOf(d.get("RSTR_ID")))
                             .rstrNm(d.get("RSTR_NM"))
                             .rstrRdnmAdr(d.get("RSTR_RDNMADR"))
                             .rstrLnnoAdres(d.get("RSTR_LNNO_ADRES"))
-                            .rstrLa(Double.valueOf(d.get("RSTR_LA")  == null ? "0.0" : d.get("RSTR_LA")))
+                            .rstrLa(Double.valueOf(d.get("RSTR_LA") == null ? "0.0" : d.get("RSTR_LA")))
                             .rstrLo(Double.valueOf(d.get("RSTR_LO") == null ? "0.0" : d.get("RSTR_LO")))
                             .rstrTelNo(d.get("RSTR_TELNO"))
                             .dbsnsStatmBzcndNm(d.get("BSNS_STATM_BZCND_NM"))
@@ -85,13 +91,12 @@ public class DataTransferService {
                             .rstrIntrcnCont(d.get("RSTR_INTRCN_CONT"))
                             .build();
 
-                    if (extra == null) {
-                        return rest;
-                    }
+                    if (extra != null) {
 
                     rest.setAreaNm(extra.get("AREA_NM"));
 
-                    if (extra.get("PRDL_SEAT_CNT") != null) rest.setPrdlSeatCnt(Integer.valueOf(extra.get("PRDL_SEAT_CNT")));
+                    if (extra.get("PRDL_SEAT_CNT") != null)
+                        rest.setPrdlSeatCnt(Integer.valueOf(extra.get("PRDL_SEAT_CNT")));
                     if (extra.get("SEAT_CNT") != null) rest.setSeatCnt(Integer.valueOf(extra.get("SEAT_CNT")));
                     rest.setPrkgPosYn(extra.get("PRKG_POS_YN").equals("Y"));
                     rest.setWifiOfrYn(extra.get("WIFI_OFR_YN").equals("Y"));
@@ -111,7 +116,12 @@ public class DataTransferService {
                     rest.setMbPmamtYn(extra.get("MB_PMAMT_YN").equals("Y"));
                     rest.setSmorderYn(extra.get("SMORDER_YN").equals("Y"));
                     rest.setReprsntMenuNm(extra.get("REPRSNT_MENU_NM"));
+                }
 
+                    if (extra2 != null) {
+                        rest.setAwardInfoDscrn(extra2.get("AWARD_INFO_DSCRN"));
+                        rest.setNaverGrad(extra2.get("NAVER_GRAD") == null ? null : Double.valueOf(extra2.get("NAVER_GRAD")));
+                    }
                     return rest;
                 }).toList();
 

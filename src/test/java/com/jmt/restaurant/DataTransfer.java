@@ -30,7 +30,7 @@ public class DataTransfer {
     @Test
     @DisplayName("식당 기본 정보")
     void update1() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 141; i <= 170; i++) {
             service.update1(i);
         }
 
@@ -63,6 +63,7 @@ public class DataTransfer {
     @Test
     @DisplayName("이미지가 없는 식당 이미지 업데이트")
     void update5() throws Exception {
+        /*
         for (int i = 1; i <= 5; i++) {
             RestaurantSearch search = new RestaurantSearch();
             search.setPage(i);
@@ -71,8 +72,10 @@ public class DataTransfer {
             List<Restaurant> items = data.getItems();
             if (items == null || items.isEmpty()) continue;
 
-            items.forEach(item -> imageService.update(item.getRstrId()));
+            //items.forEach(item -> imageService.update(item.getRstrId()));
             Thread.sleep(5000);
         }
+
+         */
     }
 }
