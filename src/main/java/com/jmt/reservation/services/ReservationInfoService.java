@@ -19,6 +19,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 import static org.springframework.data.domain.Sort.Order.desc;
 
 @Service
@@ -87,7 +89,10 @@ public class ReservationInfoService {
         Pageable pageable = PageRequest.of(page - 1, limit, Sort.by(desc("createdAt")));
         Page<Reservation> data = reservationRepository.findAll(andBuilder, pageable);
         Pagination pagination = new Pagination(page, (int) data.getTotalElements(), 10, limit, request);
-        return new ListData<>(data.getContent(),pagination);
+        List<Reservation> items = data.getContent();
+        items.forEach(this::addInfo);
+
+        return new ListData<>(items,pagination);
     }
 
     public Reservation get(Long orderNo) {
@@ -106,6 +111,6 @@ public class ReservationInfoService {
         int totalPayPrice = price * persons;
         item.setTotalPayPrice(totalPayPrice);
 
-        item.setStatusStr(item.getStatus().name());
+        item.setStatusStr(item.getStatus().getTitle());
     }
 }

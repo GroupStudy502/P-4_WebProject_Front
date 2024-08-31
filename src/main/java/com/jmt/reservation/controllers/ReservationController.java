@@ -57,8 +57,10 @@ public class ReservationController {
      */
     @GetMapping("/cancel/{orderNo}")
     @PreAuthorize("isAuthenticated()")
-    public void cancel(@PathVariable("orderNo") Long orderNo) {
+    public JSONData cancel(@PathVariable("orderNo") Long orderNo) {
+        Reservation item = cancelService.cancel(orderNo);
 
+        return new JSONData(item);
     }
 
     /**
