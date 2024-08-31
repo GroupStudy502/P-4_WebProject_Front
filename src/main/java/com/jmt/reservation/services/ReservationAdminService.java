@@ -142,8 +142,6 @@ public class ReservationAdminService {
 
 
     public JSONData updateStatus(RequestReservationStatus form) {
-        System.out.println("===============form============");
-        System.out.println(form);
 
         Reservation reservation = infoService.get(form.getOrderNo());
         reservation.setStatus(form.getStatus());
