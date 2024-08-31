@@ -4,7 +4,6 @@ import com.jmt.global.ListData;
 import com.jmt.global.rests.JSONData;
 import com.jmt.reservation.entities.Reservation;
 import com.jmt.reservation.services.ReservationAdminService;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @RequestMapping("/reservation/admin")
 public class ReservationAdminContoller {
     private final ReservationAdminService service;
-    private final JPAQueryFactory queryFactory;
+
 
 
     @GetMapping("/list")// 목록 조회
@@ -38,5 +37,10 @@ public class ReservationAdminContoller {
         Reservation item = service.delete(seq);
 
         return new JSONData(item);
+    }
+    @PostMapping("/update")
+    public JSONData save(@RequestBody RequestReservationStatus form) {
+        return service.updateStatus(form);
+        //return null;
     }
 }

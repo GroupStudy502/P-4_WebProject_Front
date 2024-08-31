@@ -2,6 +2,8 @@ package com.jmt.reservation.services;
 
 import com.jmt.global.ListData;
 import com.jmt.global.Pagination;
+import com.jmt.global.rests.JSONData;
+import com.jmt.reservation.controllers.RequestReservationStatus;
 import com.jmt.reservation.controllers.ReservationSearch;
 import com.jmt.reservation.entities.QReservation;
 import com.jmt.reservation.entities.Reservation;
@@ -28,6 +30,8 @@ public class ReservationAdminService {
     private final ReservationRepository repository;
     private final HttpServletRequest request;
     private final JPAQueryFactory queryFactory;
+    private final ReservationInfoService infoService;
+
 
     public ListData<Reservation> getList(ReservationSearch search) {
 
@@ -74,20 +78,20 @@ public class ReservationAdminService {
             andBuilder.and(orBuilder);
         }
 
-        //String sort = search.getSort();
+        String sort = search.getSort();
 
         PathBuilder<Reservation> pathBuilder = new PathBuilder<>(Reservation.class, "reservation");
         OrderSpecifier orderSpecifier = null;
         Order order = Order.DESC;
-//        if (sort != null && StringUtils.hasText(sort.trim())) {
-//            // 정렬항목_방향   예) viewCount_DESC -> 조회수가 많은 순으로 정렬
-//            String[] _sort = sort.split("_");
-//            if (_sort[1].toUpperCase().equals("ASC")) {
-//                order = Order.ASC;
-//            }
-//
-//            orderSpecifier = new OrderSpecifier(order, pathBuilder.get(_sort[0]));
-//        }
+        if (sort != null && StringUtils.hasText(sort.trim())) {
+            // 정렬항목_방향   예) viewCount_DESC -> 조회수가 많은 순으로 정렬
+            String[] _sort = sort.split("_");
+            if (_sort[1].toUpperCase().equals("ASC")) {
+                order = Order.ASC;
+            }
+
+            orderSpecifier = new OrderSpecifier(order, pathBuilder.get(_sort[0]));
+        }
 
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
         if (orderSpecifier != null) {
@@ -133,6 +137,20 @@ public class ReservationAdminService {
         repository.delete(data);
         repository.flush();
 
+        return data;
+    }
+
+
+    public JSONData updateStatus(RequestReservationStatus form) {
+
+        Reservation reservation = infoService.get(form.getOrderNo());
+        reservation.setStatus(form.getStatus());
+
+        repository.saveAndFlush(reservation);
+
+        JSONData data = new JSONData(form);
+        data.setMessage("처리되었습니다.");
+        data.setSuccess(true);
         return data;
     }
 }
