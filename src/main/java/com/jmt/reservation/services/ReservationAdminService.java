@@ -2,6 +2,8 @@ package com.jmt.reservation.services;
 
 import com.jmt.global.ListData;
 import com.jmt.global.Pagination;
+import com.jmt.global.rests.JSONData;
+import com.jmt.reservation.controllers.RequestReservationStatus;
 import com.jmt.reservation.controllers.ReservationSearch;
 import com.jmt.reservation.entities.QReservation;
 import com.jmt.reservation.entities.Reservation;
@@ -28,6 +30,8 @@ public class ReservationAdminService {
     private final ReservationRepository repository;
     private final HttpServletRequest request;
     private final JPAQueryFactory queryFactory;
+    private final ReservationInfoService infoService;
+
 
     public ListData<Reservation> getList(ReservationSearch search) {
 
@@ -133,6 +137,22 @@ public class ReservationAdminService {
         repository.delete(data);
         repository.flush();
 
+        return data;
+    }
+
+
+    public JSONData updateStatus(RequestReservationStatus form) {
+        System.out.println("===============form============");
+        System.out.println(form);
+
+        Reservation reservation = infoService.get(form.getOrderNo());
+        reservation.setStatus(form.getStatus());
+
+        repository.saveAndFlush(reservation);
+
+        JSONData data = new JSONData(form);
+        data.setMessage("처리되었습니다.");
+        data.setSuccess(true);
         return data;
     }
 }
