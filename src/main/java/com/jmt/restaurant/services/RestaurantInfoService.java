@@ -40,6 +40,7 @@ public class RestaurantInfoService {
     private final JPAQueryFactory queryFactory;
     private final WishListService wishListService;
     private final RestaurantImageService imageService;
+
     /**
      * 목록 조회
      * @param search
