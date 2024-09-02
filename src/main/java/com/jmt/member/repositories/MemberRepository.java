@@ -17,4 +17,9 @@ public interface MemberRepository extends JpaRepository<Member, Long>, QuerydslP
 
         return exists(member.email.eq(email));
     }
+    Optional<Member> findByUserName(String userName);
+    Optional<Member> findByUserNameAndMobile(String userName, String mobile);
+
+
+
 }

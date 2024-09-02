@@ -75,4 +75,7 @@ public class MemberController {
         List<Member> members = memberInfoService.getMembers();
         return new JSONData(members);
     }
+
+
+
 }
