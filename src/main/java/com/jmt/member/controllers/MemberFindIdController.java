@@ -8,7 +8,7 @@ import com.jmt.member.validators.IdValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,7 @@ public class MemberFindIdController {
     private final Utils utils;
     private final MemberFindIdService memberFindIdService;
 
-    @GetMapping("/find_id")
+    @PostMapping("/find_id")
     public JSONData idSearch(@RequestBody @Valid RequestId form, Errors errors) {
 
 
