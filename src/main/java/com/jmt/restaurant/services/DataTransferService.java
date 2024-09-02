@@ -33,7 +33,7 @@ public class DataTransferService {
     private final RestTemplate restTemplate;
     private final ConfigInfoService infoService;
 
-    private String serviceKey = "T2eCOptdknlAVKakKH6Y7DWFweda6uRh6jOSaUXsdU8WnvLoNfTFJSo0lVJk37g1";
+    private String serviceKey = "bwG9zZYV5kiXOQ98B0ciZsOkWD62KUwXxpWPH4aMro0AW2lKYPBBR5Q4SgUdMYM4";
     private static final String apiBaseUrl = "https://seoul.openapi.redtable.global/api";
 
     // 방법1
