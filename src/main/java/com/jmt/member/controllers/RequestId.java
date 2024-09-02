@@ -3,7 +3,7 @@ package com.jmt.member.controllers;
 import lombok.Data;
 
 @Data
-public class ReqeustId {
+public class RequestId {
 
     private String userName;
 
